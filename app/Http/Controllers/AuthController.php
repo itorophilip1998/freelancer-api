@@ -13,14 +13,14 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['signup', 'signin']]);
     }
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){  
+    public function signin(Request $request){  
     	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
@@ -38,8 +38,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) { 
-           
+    public function signup(Request $request) { 
        try {
          $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
@@ -71,7 +70,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function signout() {
        try {
          auth()->logout();
         return response()->json(['message' => 'User successfully signed out']);
@@ -96,7 +95,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile() { 
      try {
         return response()->json(auth()->user());
      } catch (\Throwable $th) {
