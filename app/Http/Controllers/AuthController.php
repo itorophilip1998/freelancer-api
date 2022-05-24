@@ -39,6 +39,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function signup(Request $request) { 
+        // dd($request->all());
        try {
          $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
@@ -46,8 +47,8 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed|min:6',
             'phone' => 'required|string|max:14|min:11' ,
             'role' => 'required|string|in:seller,buyer' ,
-            "address"=>"excludeIf :role,buyer",
-            "city"=>"excludeIf :role,buyer"
+            "address"=>"excludeIf:role,buyer",
+            "city"=>"excludeIf:role,buyer"
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
@@ -61,7 +62,7 @@ class AuthController extends Controller
             'user' => $user
         ], 200);
        } catch (\Throwable $th) {
-           //throw $th;
+           throw $th;
        }
     }
 
@@ -118,6 +119,6 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
        } catch (\Throwable $th) {
-           throw $th;
+        //    throw $th;
        }    }
 }
