@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers;
+use Validator;
+use App\Models\User;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -21,10 +23,18 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function signin(Request $request){  
-    	$validator = Validator::make($request->all(), [
+            
+    //     Mail::send('emails.welcome', $request->all(), function ($message) use ($request) {
+    //     $message->to($request)
+    //         ->subject('Welcome to Cassava')
+    //         ->from("itorophilip1998@gmail.com", 'Cassava.com');
+    // });
+    try {
+       	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
+      
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
@@ -32,6 +42,9 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->createNewToken($token);
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
     }
     /**
      * Register a User.
@@ -39,7 +52,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function signup(Request $request) { 
-        // dd($request->all());
+
        try {
          $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
@@ -47,9 +60,12 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed|min:6',
             'phone' => 'required|string|max:14|min:11' ,
             'role' => 'required|string|in:seller,buyer' ,
-            "address"=>"excludeIf:role,buyer",
-            "city"=>"excludeIf:role,buyer"
+            'business_type' => 'requiredIf:role,seller|string|in:individual,company' ,
+            "address"=>"excludeIf:role,buyer|requiredIf:role,seller",
+            "city"=>"excludeIf:role,buyer|requiredIf:role,seller"
         ]);
+       
+
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
@@ -110,7 +126,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token){ 
        try {
            return response()->json([
             'access_token' => $token,
