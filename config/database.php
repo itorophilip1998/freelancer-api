@@ -42,15 +42,15 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
+ 
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'db4free.net'),
+            'host' => env('DB_HOST', 'sql3.freemysqlhosting.net'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'jesusdekey'),
-            'username' => env('DB_USERNAME', 'itorophilip'),
-            'password' => env('DB_PASSWORD', 'itorophilip'),
+            'database' => env('DB_DATABASE', 'sql3495177'),
+            'username' => env('DB_USERNAME', 'sql3495177'),
+            'password' => env('DB_PASSWORD', 'lxfIFY54cx'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

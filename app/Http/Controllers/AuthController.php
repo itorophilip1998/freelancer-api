@@ -78,7 +78,7 @@ class AuthController extends Controller
             'user' => $user
         ], 200);
        } catch (\Throwable $th) {
-           throw $th;
+        //    throw $th;
        }
     }
 
