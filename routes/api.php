@@ -1,8 +1,8 @@
 <?php
-
-
+ 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CardDetailsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +27,12 @@ Route::group([
     Route::get('/user', [AuthController::class, 'userProfile']);    
     Route::get('/verify/{token}/{email}', [AuthController::class, 'verify']);    
 });
-
  
+//  Card Details 
+ Route::group([ 
+    'prefix' => 'card'
+], function ($router) {
+    Route::post('/add', [CardDetailsController::class, 'add']);
+    Route::delete('/remove/{id}', [CardDetailsController::class, 'remove']);
+    Route::get('/get', [CardDetailsController::class, 'get']);
+ });

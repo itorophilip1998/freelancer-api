@@ -14,9 +14,9 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['signup', 'signin']]);
-    }
+    // public function __construct() {
+    //     $this->middleware('auth:api', ['except' => ['signup', 'signin']]);
+    // }
     /**
      * Get a JWT via given credentials.
      *
@@ -39,7 +39,7 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized ⚠️'], 401);
         }
         return $this->createNewToken($token);
     } catch (\Throwable $th) {
@@ -74,7 +74,7 @@ class AuthController extends Controller
                     ['password' => bcrypt($request->password)]
                 ));
         return response()->json([
-            'message' => 'User successfully registered,  please verify your email',
+            'message' => 'User successfully registered,  please verify your email 👍',
             'user' => $user
         ], 200);
        } catch (\Throwable $th) {
@@ -89,8 +89,11 @@ class AuthController extends Controller
      */
     public function signout() {
        try {
-         auth()->logout();
-        return response()->json(['message' => 'User successfully signed out']);
+       if(!auth()->check()){
+          return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+       }
+       auth()->logout();
+        return response()->json(['message' => 'User successfully signed out 👍']);
        } catch (\Throwable $th) {
            //throw $th;
        }
@@ -102,6 +105,9 @@ class AuthController extends Controller
      */
     public function refresh() {
       try {
+           if(!auth()->check()){
+          return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+       }
        return $this->createNewToken(auth()->refresh());
       } catch (\Throwable $th) {
           //throw $th;
@@ -114,6 +120,9 @@ class AuthController extends Controller
      */
     public function userProfile() { 
      try {
+          if(!auth()->check()){
+          return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+       }
         return response()->json(auth()->user());
      } catch (\Throwable $th) {
          //throw $th;
@@ -129,6 +138,7 @@ class AuthController extends Controller
     protected function createNewToken($token){ 
        try {
            return response()->json([
+           'message' => 'User successfully signedIn 👍',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
