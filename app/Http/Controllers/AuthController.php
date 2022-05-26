@@ -60,7 +60,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed|min:6',
             'phone' => 'required|string|max:14|min:11' ,
             'role' => 'required|string|in:seller,buyer' ,
-            'business_type' => 'requiredIf:role,seller|string|in:individual,company' ,
+            'business_type' => 'excludeIf:role,buyer|requiredIf:role,seller|string|in:individual,company' ,
             "address"=>"excludeIf:role,buyer|requiredIf:role,seller",
             "city"=>"excludeIf:role,buyer|requiredIf:role,seller"
         ]);

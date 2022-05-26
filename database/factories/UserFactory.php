@@ -22,14 +22,18 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        return [
+        // admin
+        return [ 
             'name' => "Admin",
             'email' => "admin@gmail.com",
             'email_verified_at' => now(),
             'phone' => "09024195493",
             'role'=>"admin",
             'password' =>bcrypt("admin@2022"),  
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::random(10) 
         ];
     }
+
+    //seller email:websoftLTD@gmail.com  password:password123
+    //buyer email: buyer@gmail.com ,password:password123
 }
