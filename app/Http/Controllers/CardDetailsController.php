@@ -37,7 +37,7 @@ class CardDetailsController extends Controller
             return response()->json(['message' => 'Card successfully created 👍','card'=>$card],200); 
          
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
         
     }
