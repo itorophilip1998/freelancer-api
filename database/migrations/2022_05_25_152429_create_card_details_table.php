@@ -14,7 +14,7 @@ class CreateCardDetailsTable extends Migration
     public function up()
     {
         Schema::create('card_details', function (Blueprint $table) {
-            $table->id(); 
+            $table->id()->autoIncrement(); 
             $table->string("card_number");  
             $table->string("expiry_month");
             $table->string("expiry_year");
