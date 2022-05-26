@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserDetailsSeeder extends Seeder
 {
@@ -16,7 +17,7 @@ class UserDetailsSeeder extends Seeder
     public function run()
     {
  
-           User::create( ['name' => "Admin",
+           DB::table('users')->insert( ['name' => "Admin",
             'email' => "admin@gmail.com",
             'email_verified_at' => now(),
             'phone' => "09024195493",
