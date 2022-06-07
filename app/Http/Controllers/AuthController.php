@@ -55,14 +55,12 @@ class AuthController extends Controller
 
        try {
          $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+            'firstname' => 'required|string|between:2,100',
+            'lastname' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
             'phone' => 'required|string|max:14|min:11' ,
-            'role' => 'required|string|in:seller,buyer' ,
-            'business_type' => 'excludeIf:role,buyer|requiredIf:role,seller|string|in:individual,company' ,
-            "address"=>"excludeIf:role,buyer|requiredIf:role,seller",
-            "city"=>"excludeIf:role,buyer|requiredIf:role,seller"
+            'role' => 'required|string|in:user' 
         ]);
        
 

@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Skill;
+use App\Models\Profile;
+use App\Models\Ranting;
+// use Laravel\Sanctum\HasApiTokens;
+use App\Models\BankDetails;
 use App\Models\CardDetails;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-// use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
       
@@ -20,14 +24,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        "phone",
-        "city",
+        'firstname',
+        'lastname',
+        'email',  
+        "password",
+        "phone", 
         "address",
-        "role",
-        "business_type"
+        "role", 
     ];
 
     /**
@@ -70,12 +73,23 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    
+    } 
     public function card_details()
     {
         return $this->hasMany(CardDetails::class);
     }
+    public function profle()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    public function ratings(){
+        return $this->hasMany(Ranting::class);
+    }
+    public function skills(){
+        return $this->hasMany(Skill::class);
+    }
+    public function bank_details(){
+        return $this->hasMany(BankDetails::class);
+    }  
     
 }
