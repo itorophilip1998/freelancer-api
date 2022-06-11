@@ -30,7 +30,7 @@ class User extends Authenticatable implements JWTSubject
         "password",
         "phone", 
         "address",
-        "role", 
+        "role" 
     ];
 
     /**
@@ -74,13 +74,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     } 
-    public function card_details()
+    public function cardDetails()
     {
         return $this->hasMany(CardDetails::class);
     }
     public function profle()
-    {
-        return $this->hasOne(Profile::class);
+    { 
+          return $this->hasOne(Profile::class);
+
     }
     public function ratings(){
         return $this->hasMany(Ranting::class);
@@ -88,8 +89,8 @@ class User extends Authenticatable implements JWTSubject
     public function skills(){
         return $this->hasMany(Skill::class);
     }
-    public function bank_details(){
+    public function bankDetails(){
         return $this->hasMany(BankDetails::class);
     }  
     
-}
+}  

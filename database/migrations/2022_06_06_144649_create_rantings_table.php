@@ -15,12 +15,16 @@ class CreateRantingsTable extends Migration
     {
         Schema::create('rantings', function (Blueprint $table) {
            $table->id()->autoIncrement(); 
-           $table->integer("rate"); 
-
+           $table->integer("rate");  
                  // relationship
-            $table->integer("user_id");
-            $table->integer("rater_id");
-            $table->timestamps();
+        $table->unsignedBigInteger("user_id");   
+        $table->unsignedBigInteger("rater_id");     
+        $table->timestamps();
+
+        // foreign
+       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
+        $table->foreign('rater_id') ->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

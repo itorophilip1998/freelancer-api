@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
 
     'mailers' => [
         'smtp' => [
-            'transport' => 'smtp',
+            'transport' => env('MAIL_MAILER'),
             'host' => env('MAIL_HOST'),
             'port' => env('MAIL_PORT'),
             'encryption' => env('MAIL_ENCRYPTION'),
@@ -83,8 +83,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('MAIL_FROM_NAME'),
     ],
 
     /*

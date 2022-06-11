@@ -455,12 +455,12 @@
                                 </li>
                                          <li>
                                              <p>
-                                <a target="_blank" href="https://freelancer-stagging-api.herokuapp.com/api"><b>Api: </b> https://freelancer-stagging-api.herokuapp.com/api</a>    
+                                <a target="_blank" href="https://freelancer-beta-api.herokuapp.com/api"><b>Api: </b> https://freelancer-beta-api.herokuapp.com/api</a>    
 
                                              </p>
                                 </li>
                                     <li>
-                                <a target="_blank" href="https://freelancer-stagging-api.herokuapp.com"><b>Base Url:</b> https://freelancer-stagging-api.herokuapp.com</a>    
+                                <a target="_blank" href="https://freelancer-beta-api.herokuapp.com"><b>Base Url:</b> https://freelancer-beta-api.herokuapp.com</a>    
                                 </li> 
                                   </ul>
                             </div>
@@ -475,7 +475,7 @@
                                 </path>
                                 <path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
-                            <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://freelancer-stagging-api.herokuapp.com/api"
+                            <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://freelancer-beta-api.herokuapp.com/api"
                                     class="underline text-gray-900 dark:text-white">Our Test Account</a></div>
                         </div>
 

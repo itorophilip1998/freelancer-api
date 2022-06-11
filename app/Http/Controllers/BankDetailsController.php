@@ -3,84 +3,70 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankDetails;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreBankDetailsRequest;
-use App\Http\Requests\UpdateBankDetailsRequest;
+use App\Http\Requests\UpdateBankDetailsRequest; 
 
 class BankDetailsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    
+    public function add()
+    { 
+      try {      
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+                $validator = Validator::make(request()->all(), [
+                'account_name' => 'required|string',
+                'account_number' => 'required|string',
+                'bank' => 'required|string', 
+                'user_id' => 'required|integer' 
+            ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+      
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+           
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreBankDetailsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreBankDetailsRequest $request)
-    {
-        //
+             $bank = BankDetails::create(array_merge(
+                    $validator->validated() 
+                ));
+            return response()->json(['message' => 'Bank successfully created 👍','bank'=>$bank],200); 
+         
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
+ public function remove($id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            } 
+          $bank=BankDetails::where("id",$id)
+          ->where("user_id",auth()->user()->id)
+          ->delete();
+          if(!$bank)  return response()->json(['message' => 'Sorry this bank  does not belong to you or does not exist⚠️','bank'=>$bank],401); 
+ 
+          
+          return response()->json(['message' => 'Bank successfully Deleted 👍','bank'=>$bank],200); 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\BankDetails  $bankDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BankDetails $bankDetails)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BankDetails  $bankDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BankDetails $bankDetails)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateBankDetailsRequest  $request
-     * @param  \App\Models\BankDetails  $bankDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateBankDetailsRequest $request, BankDetails $bankDetails)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\BankDetails  $bankDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(BankDetails $bankDetails)
-    {
-        //
-    }
+      } catch (\Throwable $th) {
+        //   throw $th;
+      }
+ }
+ public function get()
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+        $bank=BankDetails::where("user_id",auth()->user()->id)->get();
+        return response()->json(['message' => 'Bank successfully Loaded 👍','bank'=>$bank],200); 
+      } catch (\Throwable $th) {
+        //   throw $th;
+      }
+ }
 }

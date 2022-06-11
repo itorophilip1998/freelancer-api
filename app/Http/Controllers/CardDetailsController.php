@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\CardDetails;
+ 
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\CardDetails;
 
-use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BankDetailsController;
  
 class CardDetailsController extends Controller
 {

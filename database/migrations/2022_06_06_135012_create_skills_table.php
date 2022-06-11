@@ -15,12 +15,15 @@ class CreateSkillsTable extends Migration
     {
         Schema::create('skills', function (Blueprint $table) { 
              $table->id()->autoIncrement(); 
-            // relationship
-            $table->integer("user_id");  
-            
-            $table->string("name"); 
+            // relationship  
+            $table->unsignedBigInteger("user_id");
+           $table->string("name"); 
             $table->integer("rate");    
             $table->timestamps();
+            
+            //  foreign   
+             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');  
+         
         });
     }
 

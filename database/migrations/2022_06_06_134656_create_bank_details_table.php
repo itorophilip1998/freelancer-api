@@ -15,12 +15,16 @@ class CreateBankDetailsTable extends Migration
     {
         Schema::create('bank_details', function (Blueprint $table) {
             $table->id()->autoIncrement(); 
-              $table->string("account_name");
+            $table->string("account_name");
             $table->string("account_number");
             $table->string("bank");
-            // relationship
-            $table->integer("user_id");
+            // relationship 
+            $table->unsignedBigInteger("user_id");    
             $table->timestamps();
+            
+            //  foreign   
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

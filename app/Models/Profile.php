@@ -19,9 +19,9 @@ class Profile extends Model
         "twitter_username"
     ];
          
-      public function user()
+public function user()
   {
       return $this->belongsTo(User::class);
   } 
-  
+    
 }

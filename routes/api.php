@@ -3,17 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CardDetailsController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+use App\Http\Controllers\BankDetailsController;
+use App\Http\Controllers\VerifyController;
 
 //  Auth route
 Route::group([
@@ -24,10 +15,18 @@ Route::group([
     Route::post('/signin', [AuthController::class, 'signin']);
     Route::post('/signout', [AuthController::class, 'signout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user', [AuthController::class, 'userProfile']);    
-    Route::get('/verify/{token}/{email}', [AuthController::class, 'verify']);    
+    Route::get('/user', [AuthController::class, 'userProfile']);       
 });
- 
+
+ //  Verify route
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'verify'
+], function ($router) { 
+    Route::get('/{token}/{email}', [VerifyController::class, 'verify']);    
+    Route::post('/resend', [VerifyController::class, 'resend']);    
+});
+
 //  Card Details 
  Route::group([ 
     'prefix' => 'card'
@@ -35,4 +34,13 @@ Route::group([
     Route::post('/add', [CardDetailsController::class, 'add']);
     Route::delete('/remove/{id}', [CardDetailsController::class, 'remove']);
     Route::get('/get', [CardDetailsController::class, 'get']);
+ });
+
+ //Bank Details
+ Route::group([ 
+    'prefix' => 'bank'
+], function ($router) {
+    Route::post('/add', [BankDetailsController::class, 'add']);
+    Route::delete('/remove/{id}', [BankDetailsController::class, 'remove']);
+    Route::get('/get', [BankDetailsController::class, 'get']);
  });

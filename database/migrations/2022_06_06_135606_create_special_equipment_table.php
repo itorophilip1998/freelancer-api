@@ -15,11 +15,16 @@ class CreateSpecialEquipmentTable extends Migration
     {
         Schema::create('special_equipment', function (Blueprint $table) { 
             $table->id()->autoIncrement(); 
-            // relationship
-            $table->integer("user_id");  
-            $table->integer("skill_id");  
-            $table->string("name");  
+            // relationship   
+            $table->unsignedBigInteger("skill_id");   
+            $table->unsignedBigInteger("user_id");   
+           $table->string("name");  
             $table->timestamps();
+            
+                  // foreign
+             $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade'); 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
+      
         });
     }
 

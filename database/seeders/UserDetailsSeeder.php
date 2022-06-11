@@ -4,8 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Seeder; 
 
 class UserDetailsSeeder extends Seeder
 {
@@ -17,14 +16,28 @@ class UserDetailsSeeder extends Seeder
     public function run()
     {
  
-           DB::table('users')->insert( ['name' => "Admin",
+        User::create([
+            'firstname' => "Tester",
+            'lastname' => "Admin",
             'email' => "admin@gmail.com",
             'email_verified_at' => now(),
             'phone' => "09024195493",
             'role'=>"admin",
-            'password' =>bcrypt("admin@2022"),  
-            'remember_token' => Str::random(10) ]);
-    
+            'password' =>bcrypt("password123"),  
+            'remember_token' => Str::random(10)
+         ]);
+         
+           User::create([
+            'firstname' => "Tester",
+            'lastname' => "User",
+            'email' => "user@gmail.com",
+            'email_verified_at' => now(),
+            'phone' => "09024195493",
+            'role'=>"user",
+            'password' =>bcrypt("password123"),  
+            'remember_token' => Str::random(10)
+         ])->profle()->create();
+   
     }
 
     //seller email:websoftLTD@gmail.com  password:password123
