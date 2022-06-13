@@ -39,8 +39,6 @@ class UserDetailsSeeder extends Seeder
          ])->profle()->create();
    
     }
-
-    //seller email:websoftLTD@gmail.com  password:password123
-    //buyer email: buyer@gmail.com ,password:password123
+ 
    
 }

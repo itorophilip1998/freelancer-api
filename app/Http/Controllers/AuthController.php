@@ -1,26 +1,18 @@
 <?php
 namespace App\Http\Controllers; 
 use App\Models\User;
-use App\Mail\WelcomeMail;
+use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator; 
 
 class AuthController extends Controller
 {
     
-    public function signin(Request $request){   
-   $sendMail=  Mail::send('emails.welcome', $request->all(), function ($message) use ($request) {
-            $message->to($request->email)
-            ->subject('Welcome to Freelancer')
-            ->from("itorophilip1998@gmail.com", 'freelancer.com');
-      });
-      if(!$sendMail){
-            return response()->json([
-                  'message' => 'Cannot send mail, please check mail and resend verfication'
-        ], 400); 
-    }
+    public function signin(Request $request){    
+  
     try {
        	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -55,18 +47,34 @@ class AuthController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-           $user = User::create(array_merge(
+        $verify_token=rand(1111,9999);
+           User::create(array_merge(
                     $validator->validated(),
-                    ['password' => bcrypt($request->password)]
+                    [
+                    'password' => bcrypt($request->password),
+                    "verify_token"=>$verify_token
+                    ]
            ))->profle()->create();
-            
+           $uri=URL::to("/api/verify/$verify_token/$request->email"); 
+        $mail_data=[
+            "subject"=>"Welcome to Freelancer",
+            "view"=>"emails.welcome",
+            "main"=>request()->all(),
+            "link"=>"$uri",
+            "token"=>"$verify_token"
+        ];
+    try { 
+            Mail::to(request()->email)->send(new SendMail($mail_data));
+        } catch (\Throwable $th) {   
+        //    throw $th; 
+        return response()->json(['error' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
+    }
 
         return response()->json([
-            'message' => 'User successfully registered,  please verify your email 👍',
-            'user' => $user
+            'message' => "User successfully registered 👍,  please verify your account 👉 <$request->email>",
         ], 200);
        } catch (\Throwable $th) {
-           throw $th;
+        //    throw $th;
        }
     }
 
