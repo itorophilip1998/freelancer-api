@@ -25,9 +25,14 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized ⚠️'], 401);
         }
+        $verified=User::where("email",$request->email) 
+        ->first(); 
+         if (!$verified->email_verified_at) {
+           return response()->json(['error' => 'Account not verified ⚠️'], 401);
+        }
         return $this->createNewToken($token);
     } catch (\Throwable $th) {
-        //throw $th;
+        // throw $th;
     }
     }
     
@@ -41,8 +46,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed|min:6',
             'phone' => 'required|string|max:14|min:11' ,
             'role' => 'required|string|in:user' 
-        ]);
-       
+        ]); 
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);

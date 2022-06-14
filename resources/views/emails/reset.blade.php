@@ -12,7 +12,7 @@
                 Hi   {{ $data["main"]["firstname"] }}
             </p>
                 <p>
-                    Thanks for choosing the Freelancer, we’re happy you’ve chosen to be part of us!  
+                  Hi Steph, You requested to reset your password on {{ now()->format("d M Y h:m") }}.
    <br/><br/>
     Search  various types of services around your location with ease — welcome! If there’s anything you need, we’ll be here every step of the way.
 </p>
@@ -22,7 +22,7 @@
 <div class="extra">
    <div class="btn_container">
         <a href="{{ $data['link'] }}" target="_blank" class="btn_text">
-        Confirm Email Address
+       Reset Password
     </a>
    </div>
     <div class="token">

@@ -16,11 +16,13 @@ class VerifyController extends Controller
              $user=User::where("verify_token",$token)
              ->where("email",$email)
              ->first();
+            
             if(!$user){
                 return response()->json(['error' => 'This user does not exist or incorrect token, Resend mail notification ⚠️'], 401);  
                 } 
                
              $user->update(["email_verified_at"=>now()]); 
+             $user->update(["verify_token"=>null]); 
               return response()->json([
             'message' => "Your account was successfully verified👉 <$email>",
         ], 200);
@@ -30,8 +32,7 @@ class VerifyController extends Controller
      }
      public function resend(Request $request){
       try {
-        $verify_token=rand(1111,9999);
-
+        $verify_token=rand(1111,9999); 
          $validator = Validator::make(request()->all(), [ 
             'email' => 'required|string|email|max:100', 
         ]);
@@ -39,16 +40,19 @@ class VerifyController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $user=User::where('email',$request->email)->first();
+       if($user->email_verified_at){
+        return response()->json(['error' => 'This user does is already verified ⚠️'], 401);  
+
+       }
         if(!$user){
         return response()->json(['error' => 'This user does not exist⚠️'], 401);  
         }
           $user->update(["verify_token"=>$verify_token]);
-           $uri=URL::to("/api/verify/$verify_token/$request->email"); 
-        
+           $uri=URL::to("/api/verify/$verify_token/$request->email");
            $mail_data=[
             "subject"=>"Welcome to Freelancer",
             "view"=>"emails.welcome",
-            "main"=>request()->all(),
+            "main"=> $user,
             "link"=>"$uri",
             "token"=>"$verify_token"
         ];
@@ -58,11 +62,11 @@ class VerifyController extends Controller
             'message' => "A verification link has been sent to your account 👉 <$request->email>",
         ], 200);
         } catch (\Throwable $th) {   
-        //    throw $th; 
+          //  throw $th; 
         return response()->json(['error' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
     }
       } catch (\Throwable $th) {
-        //   throw $th;
+          throw $th;
       }
      }
 }

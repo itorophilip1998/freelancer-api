@@ -83,8 +83,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function profle()
     { 
-          return $this->hasOne(Profile::class);
-
+          return $this->hasOne(Profile::class); 
     }
     public function ratings(){
         return $this->hasMany(Ranting::class);

@@ -85,16 +85,13 @@ border-radius: 10px;
         </main>
 
     <Footer>
-<p> 
-If you have any questions about using Freelancer, please take a look at our <a href="/f">FAQ</a>
-.  Don’t want any more emails from Freelancer? 
-<a href="/f">
-    Unsubscribe.
-</a>
- </p>
-<p class="copy_right">
-    © 2022 Freelancer
+
+<p >
+    
+Thanks, <br/>
+Freelancer Team
 </p>
+  
     </Footer>
     </div>
 </body>

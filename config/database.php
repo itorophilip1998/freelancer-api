@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION'),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,16 +46,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'sql3.freemysqlhosting.net'),
+            'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'sql3495177'),
-            'username' => env('DB_USERNAME', 'sql3495177'),
-            'password' => env('DB_PASSWORD', 'lxfIFY54cx'),
-            //    'host' => env('DB_HOST', 'db4free.net'),
-            // 'port' => env('DB_PORT', '3306'),
-            // 'database' => env('DB_DATABASE', 'jesusdekey'),
-            // 'username' => env('DB_USERNAME', 'itorophilip'),
-            // 'password' => env('DB_PASSWORD', 'itorophilip'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'), 
             'unix_socket' => env('DB_SOCKET', ''),
              'charset' => 'utf8mb4',
           'collation' => 'utf8mb4_unicode_ci',

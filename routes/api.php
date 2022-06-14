@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VerifyController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
@@ -28,6 +29,13 @@ Route::group([
     Route::post('/resend', [VerifyController::class, 'resend']);    
 });
 
+//  Update Profile route
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'profile'
+], function ($router) {
+    Route::put('/update', [ProfileController::class, 'updateProfile']);   
+});
  //  Password route
 Route::group([
     'middleware' => 'api',
@@ -54,7 +62,7 @@ Route::group([
     Route::delete('/remove/{id}', [BankDetailsController::class, 'remove']);
     Route::get('/get', [BankDetailsController::class, 'get']);
  });
-
- //TODO:content of mails and design .......
- //TODO:Stop unverified users from login in
- //TODO:Reset Password/send reset link
+  
+ //TODO:Push to server and all gits /configurations
+ //TODO:Update user profile/get user by queris and sort and relations
+ //TODO:return auth user and relations
