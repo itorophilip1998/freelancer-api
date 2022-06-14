@@ -66,3 +66,4 @@ Route::group([
  //TODO:Push to server and all gits /configurations
  //TODO:Update user profile/get user by queris and sort and relations
  //TODO:return auth user and relations
+ //TODO:bug on server card/bank details
