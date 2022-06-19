@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Validator;
 class PasswordController extends Controller
 {
     public function reset(Request $request){ 
-         $validator = Validator::make(request()->all(), [ 
+    try {
+        $validator = Validator::make(request()->all(), [ 
             'email' => 'required|string|email|max:100', 
             'password' => 'required|string|confirmed|min:6',
              'token'=>"required|string|size:10"
@@ -47,6 +48,12 @@ class PasswordController extends Controller
       return response()->json([
             'message' => "Password successfully updated! 👍, Please Login!",
         ], 200);
+    } catch (\Throwable $th) {
+      //throw $th;
+           return response()->json([
+           'error' => 'This error is from the backend, please contact the backend developer'],500);
+        
+    }
     }
 
     
@@ -92,9 +99,14 @@ class PasswordController extends Controller
         ], 200);
         } catch (\Throwable $th) {   
         //    throw $th;  
+        return response()->json(['error' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
+
  }
        } catch (\Throwable $th) {
         //    throw $th;
+          return response()->json([
+           'error' => 'This error is from the backend, please contact the backend developer'],500);
+        
        }
     }
 }

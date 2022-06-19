@@ -23,16 +23,19 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized ⚠️'], 401);
+            return response()->json(['message' => 'Unauthorized ⚠️'], 401);
         }
         $verified=User::where("email",$request->email) 
         ->first(); 
          if (!$verified->email_verified_at) {
-           return response()->json(['error' => 'Account not verified ⚠️'], 401);
+           return response()->json(['message' => 'Account not verified ⚠️'], 401);
         }
         return $this->createNewToken($token);
     } catch (\Throwable $th) {
         // throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
     }
     }
     
@@ -71,7 +74,7 @@ class AuthController extends Controller
             Mail::to(request()->email)->send(new SendMail($mail_data));
         } catch (\Throwable $th) {   
         //    throw $th; 
-        return response()->json(['error' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
+        return response()->json(['message' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
     }
 
         return response()->json([
@@ -79,6 +82,9 @@ class AuthController extends Controller
         ], 200);
        } catch (\Throwable $th) {
         //    throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
        }
     }
 
@@ -92,6 +98,9 @@ class AuthController extends Controller
         return response()->json(['message' => 'User successfully signed out 👍']);
        } catch (\Throwable $th) {
            //throw $th;
+             return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
        }
     }
  
@@ -103,30 +112,49 @@ class AuthController extends Controller
        return $this->createNewToken(Auth::refresh());
       } catch (\Throwable $th) {
           //throw $th;
+            return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
       }
     }
    
     public function userProfile() { 
      try {
+        
           if(!auth()->check()){
           return response()->json(['message' => 'Unauthorized ⚠️'], 401);
        }
-        return response()->json(auth()->user());
+        $id=auth()->user(); 
+            $authUser=User::where("id", $id["id"]) 
+            ->with("profle","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->first(); 
+        return response()->json($authUser);
      } catch (\Throwable $th) {
          //throw $th;
+           return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
      }
     }
      
     protected function createNewToken($token){ 
+
        try {
+          $id=auth()->user(); 
+            $authUser=User::where("id", $id["id"]) 
+            ->with("profle","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->first(); 
            return response()->json([
            'message' => 'User successfully signedIn 👍',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' =>$authUser
         ]);
        } catch (\Throwable $th) {
         //    throw $th;
+           return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
        }    }
 }

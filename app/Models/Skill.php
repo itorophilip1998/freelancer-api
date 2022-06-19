@@ -13,14 +13,13 @@ class Skill extends Model
       protected $fillable = [
      "user_id",
      "name",
-     "rate",
-     
+     "rate", 
     ];
      public function user()
   {
       return $this->belongsTo(User::class);
   }
-    public function special_equipment()
+    public function specialEquipment()
     {
         return $this->hasMany(SpecialEquipment::class);
     }

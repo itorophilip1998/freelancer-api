@@ -28,6 +28,9 @@ class VerifyController extends Controller
         ], 200);
           } catch (\Throwable $th) {
             //   throw $th;
+                 return response()->json([
+           'error' => 'This error is from the backend, please contact the backend developer'],500);
+        
           }
      }
      public function resend(Request $request){
@@ -66,7 +69,10 @@ class VerifyController extends Controller
         return response()->json(['error' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
     }
       } catch (\Throwable $th) {
-          throw $th;
+          // throw $th;
+               return response()->json([
+           'error' => 'This error is from the backend, please contact the backend developer'],500);
+        
       }
      }
 }

@@ -35,7 +35,10 @@ class BankDetailsController extends Controller
             return response()->json(['message' => 'Bank successfully created 👍','bank'=>$bank],200); 
          
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
+              return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
         }
         
     }
@@ -46,27 +49,32 @@ class BankDetailsController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             } 
           $bank=BankDetails::where("id",$id)
-          ->where("user_id",auth()->user()->id)
+          ->where("user_id",auth()->user()["id"])
           ->delete();
           if(!$bank)  return response()->json(['message' => 'Sorry this bank  does not belong to you or does not exist⚠️','bank'=>$bank],401); 
- 
           
           return response()->json(['message' => 'Bank successfully Deleted 👍','bank'=>$bank],200); 
 
       } catch (\Throwable $th) {
         //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
       }
  }
- public function get()
+ public function get($user_id)
  {
       try {
             if(!auth()->check()){
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
-        $bank=BankDetails::where("user_id",auth()->user()->id)->get();
+        $bank=BankDetails::where("user_id",$user_id)->get();
         return response()->json(['message' => 'Bank successfully Loaded 👍','bank'=>$bank],200); 
       } catch (\Throwable $th) {
         //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
       }
  }
 }

@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Photo;
 use App\Models\Skill;
 use App\Models\Profile;
-use App\Models\Ranting;
 // use Laravel\Sanctum\HasApiTokens;
+use App\Models\Ranting;
 use App\Models\BankDetails;
 use App\Models\CardDetails;
+use App\Models\ProfileImages;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -94,5 +96,12 @@ class User extends Authenticatable implements JWTSubject
     public function bankDetails(){
         return $this->hasMany(BankDetails::class);
     }  
-    
+    public function gallery()
+    { 
+          return $this->hasMany(ProfileImages::class); 
+    }
+    public function profileImage()
+    { 
+          return $this->hasOne(Photo::class); 
+    }
 }  

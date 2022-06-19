@@ -2,62 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StoreProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
-    public function updateProfile($user_id)
+     public function updateUser($user_id)
     { 
       try {      
             if(!auth()->check()){
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
-                $validator = Validator::make(request()->all(), [ 
-                  'user_id' => 'required|string',
-                  'location' => 'required|string',
-                  'bio' => 'required|string|max:200',
-                  "facebook_username"=>'nullable|string',
-                  "instagram_username"=>'nullable|string',
-                  "linkedin_username"=>'nullable|string',
-                  "twitter_username"=>'nullable|string',
+                $validator = Validator::make(request()->all(), [
+                  'firstname' => 'required|string|between:2,100',
+                  'lastname' => 'required|string|between:2,100',
+                  'phone' => 'required|string|max:14|min:11' 
             ]); 
             
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             } 
-             $profile = Profile::find($user_id);  
-            $profile->update(array_merge(
+             $user = User::find($user_id);  
+            $user->update(array_merge(
                     $validator->validated() 
                 ));
-            return response()->json(['message' => 'Profile successfully updated 👍','profile'=>$profile],200); 
+            return response()->json(['message' => 'User successfully updated 👍','user'=>$user],200); 
         } catch (\Throwable $th) {
             // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'],500);
-        } 
+                
+        }
+        
     }
 
-     public function getProfile($user_id)
+     public function getUser($user_id)
  {
       try {
             if(!auth()->check()){
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
-        $profile=Profile::where("user_id",$user_id)->first();
-        if(!$profile){
+        $user=User::where("id",$user_id)->first();
+        if(!$user){
                 return response()->json(['message' => 'User not found ⚠️'], 401); 
         }
-        return response()->json(['message' => 'Profile successfully Loaded 👍','profile'=>$profile],200); 
+        return response()->json(['message' => 'User successfully Loaded 👍','user'=>$user],200); 
       } catch (\Throwable $th) {
         //   throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
       }
  }
-
- 
- 
 }

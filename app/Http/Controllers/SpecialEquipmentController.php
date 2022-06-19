@@ -3,84 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\SpecialEquipment;
-use App\Http\Requests\StoreSpecialEquipmentRequest;
-use App\Http\Requests\UpdateSpecialEquipmentRequest;
+use Illuminate\Support\Facades\Validator; 
 
 class SpecialEquipmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+     public function add()
+    { 
+      try {      
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+                $validator = Validator::make(request()->all(), [
+                'name' => 'required|string', 
+                'skill_id' => 'required|integer', 
+                'user_id' => 'required|string' 
+            ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+      
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+           
+              
+             $specialEquipment = SpecialEquipment::create(array_merge(
+                    $validator->validated() 
+                ));
+       
+            return response()->json(['message' => 'Special Equipment successfully created 👍','specialEquipment'=>$specialEquipment],200); 
+         
+        } catch (\Throwable $th) {
+            // throw $th;
+                   return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+        }
+        
     }
+ public function remove($id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            } 
+          $specialEquipment=SpecialEquipment::where("id",$id)
+          ->where("user_id",auth()->user()["id"])
+          ->delete();
+          if(!$specialEquipment)  return response()->json(['message' => 'Sorry this specialEquipment does not belong to you or does not exist⚠️','specialEquipment'=>$specialEquipment],401); 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreSpecialEquipmentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreSpecialEquipmentRequest $request)
-    {
-        //
-    }
+          return response()->json(['message' => 'Special Equipment successfully Deleted 👍','specialEquipment'=>$specialEquipment],200); 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SpecialEquipment  $specialEquipment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SpecialEquipment $specialEquipment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SpecialEquipment  $specialEquipment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SpecialEquipment $specialEquipment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateSpecialEquipmentRequest  $request
-     * @param  \App\Models\SpecialEquipment  $specialEquipment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateSpecialEquipmentRequest $request, SpecialEquipment $specialEquipment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SpecialEquipment  $specialEquipment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SpecialEquipment $specialEquipment)
-    {
-        //
-    }
+      } catch (\Throwable $th) {
+        //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+      }
+ }
+ public function get($skill_id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+        $specialEquipment=SpecialEquipment::where("skill_id",$skill_id)->get();
+        return response()->json(['message' => 'Special Equipment successfully Loaded 👍','specialEquipment'=>$specialEquipment],200); 
+      } catch (\Throwable $th) {
+        //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+      }
+ }
 }
