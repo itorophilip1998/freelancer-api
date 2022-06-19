@@ -3,84 +3,98 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use Illuminate\Support\Facades\URL;
 use App\Http\Requests\StorePhotoRequest;
 use App\Http\Requests\UpdatePhotoRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PhotoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    public function add()
+    { 
+      try {      
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+                $validator = Validator::make(request()->all(), [
+                'photo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  
+                'user_id' => 'required|string' 
+            ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+      
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            // create profile picture if there is no picture
+            if(request()->hasFile('photo')){
+                    $filename = request()->photo->getClientOriginalName();
+                    $photo=request()->user_id.$filename;
+                    $userExist=Photo::where( "user_id",request()->user_id)->first();    
+                      $img =request()->photo->storeAs('photo',$photo,'public'); //upload  
+                      $image=URL::to("storage")."/".$img;
+                    if(!$userExist){     
+                    $Photo = Photo::create([
+                                'photo'=>$image,
+                            "user_id"=>request()->user_id
+                            ] );
+                      return response()->json(['message' => 'Photo successfully created 👍','Photo'=>$Photo],200); 
+         } 
+         
+           $image_path=str_replace(URL::to("/")."/","",$userExist->photo);   
+                      if(file_exists($image_path)){  
+                        unlink($image_path); //delete
+                      }
+                    $userExist->update([
+                              'photo'=>$image
+                     ] );
+                      return  response()->json(['message' => 'Photo successfully updated 👍','Photo'=>$userExist],200); 
+                
+                }
+        } catch (\Throwable $th) {
+            // throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        }
+        
     }
+ public function remove($id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePhotoRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePhotoRequest $request)
-    {
-        //
-    }
+          $Photo=Photo::where("user_id",auth()->user()["id"])->first();
+             if(!$Photo)  return response()->json(['message' => 'Sorry this Photo does not belong to you or does not exist⚠️','Photo'=>$Photo],401); 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Photo $photo)
-    {
-        //
-    }
+           $image_path=str_replace(URL::to("/")."/","",$Photo->photo);   
+            if(file_exists($image_path)){  
+                    unlink($image_path); //delete
+              }
+          $Photo->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Photo $photo)
-    {
-        //
-    }
+          return response()->json(['message' => 'Photo successfully Deleted 👍','Photo'=>$Photo],200); 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePhotoRequest  $request
-     * @param  \App\Models\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePhotoRequest $request, Photo $photo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Photo $photo)
-    {
-        //
-    }
+      } catch (\Throwable $th) {
+        //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+      }
+ }
+ public function get($user_id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+        $Photo=Photo::where("user_id",$user_id)->get();
+        return response()->json(['message' => 'Photo successfully Loaded 👍','Photo'=>$Photo],200); 
+      } catch (\Throwable $th) {
+        //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+      }
+ }
 }

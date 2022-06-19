@@ -10,6 +10,7 @@ use App\Http\Controllers\RantingController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
+use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProfileImagesController;
 use App\Http\Controllers\SpecialEquipmentController; 
 
@@ -64,6 +65,14 @@ Route::group([
 //  Upload Profile Image  Details 
  Route::group([ 
     'prefix' => 'photo'
+], function ($router) {
+    Route::post('/add', [PhotoController::class, 'add']);
+    Route::delete('/remove/{id}', [PhotoController::class, 'remove']);
+    Route::get('/get/{user_id}', [PhotoController::class, 'get']);
+ });
+//  Upload Profile Image  Details 
+ Route::group([ 
+    'prefix' => 'gallery'
 ], function ($router) {
     Route::post('/add', [ProfileImagesController::class, 'add']);
     Route::delete('/remove/{id}', [ProfileImagesController::class, 'remove']);

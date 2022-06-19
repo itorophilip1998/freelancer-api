@@ -128,7 +128,7 @@ class AuthController extends Controller
             $authUser=User::where("id", $id["id"]) 
             ->with("profle","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
             ->first(); 
-        return response()->json($authUser);
+        return response()->json(["user"=>$authUser]);
      } catch (\Throwable $th) {
          //throw $th;
            return response()->json([
