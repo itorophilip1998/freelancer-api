@@ -16,6 +16,7 @@ class CreateRantingsTable extends Migration
         Schema::create('rantings', function (Blueprint $table) {
            $table->id()->autoIncrement(); 
            $table->integer("rate");  
+        //    $table->string("review")->nullable();  
                  // relationship
         $table->unsignedBigInteger("user_id");   
         $table->unsignedBigInteger("rater_id");     

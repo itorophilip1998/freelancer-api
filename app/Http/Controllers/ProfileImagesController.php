@@ -68,7 +68,7 @@ class ProfileImagesController extends Controller
           return response()->json(['message' => 'ProfileImages successfully Deleted 👍'],200); 
 
       } catch (\Throwable $th) {
-          throw $th;
+          // throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         

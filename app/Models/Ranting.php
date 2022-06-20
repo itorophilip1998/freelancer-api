@@ -13,6 +13,7 @@ class Ranting extends Model
      "rate",
      "user_id",
      "rater_id",
+     "reviews",
     ];
      public function user()
   {

@@ -123,17 +123,23 @@ Route::group([
     Route::delete('/remove/{id}', [BankDetailsController::class, 'remove']);
     Route::get('/get/{user_id}', [BankDetailsController::class, 'get']);
  });
-   
-   //TODO:bug on server card/bank details ---done
-    //update/get that belongs to a user=>user  ---done 
-    // update/get  that belongs to a user=>profile --done 
-    //update/delete/get that belongs to  a user => skill --done 
-    //update/delete/get that belongs to  a user => equipment --done 
-    //update/delete/get that belongs to a user => rating --done
-    
-      // update/get/remove  that belongs to a user=>profile_images --doing
-    
+
+ //Search Query Options
+Route::group([ 
+    'prefix' => 'search'
+], function ($router) {
+    Route::get('/add', [SearchQueryController::class, 'query']); 
+ });
+ 
  //TODO:Search query user by queris and sort and relations  
-   // update/get/remove  that belongs to a user=>image galery
-   //bug in rating and rater id while updating and creating
-    // work on rating review --fixed-not-tested
+  //--search by Search Service{skills} integration
+  //--search by Search Location integration
+  //--search by Date of availability integration
+  
+  //--sort by users with only Equipment  method
+  //--sort by price range  method
+  //--sort by rating range method 
+  
+  //--filter by users with only Equipment  functionality
+  //--filter by price range  functionality
+  //--filter by rating range functionality 
