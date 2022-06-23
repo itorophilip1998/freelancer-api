@@ -12,6 +12,7 @@ class AuthController extends Controller
 {
     
     public function signin(Request $request){    
+
   
     try {
        	$validator = Validator::make($request->all(), [
@@ -27,14 +28,14 @@ class AuthController extends Controller
         }
         $verified=User::where("email",$request->email)
         ->first(); 
-         if (!$verified->email_verified_at) {
+        
+         if (!$verified && !$verified ->email_verified_at) {
            return response()->json(['message' => 'Account not verified ⚠️'], 401);
         }
         return $this->createNewToken($token);
-    } catch (\Throwable $th) {
-        return [  'message' =>$th];
-        //   return response()->json([
-        //    'message' => 'This error is from the backend, please contact the backend developer'],500);
+    } catch (\Throwable $th) { 
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
     }
     }
     
