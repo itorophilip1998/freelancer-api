@@ -53,24 +53,25 @@ class SpecialEquipmentController extends Controller
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             }
-            $user_id=auth()->user()->id;
 
+            $user_id=auth()->user()->id;
             $specialEquipment=SpecialEquipment::where("id",$id)
             ->where("user_id",$user_id)->first();
-          
-          if(!$specialEquipment)  return response()->json(['message' => 'Sorry this Special Equipment does not belong to you or does not exist⚠️','specialEquipment'=>$specialEquipment],401); 
+
+          if(!$specialEquipment)  return response()->json([
+            'message' => 'Sorry this Special Equipment does not belong to you or does not exist⚠️',
+            'specialEquipment'=>$specialEquipment],401); 
+            
              $specialEquipment->update(["name"=>request()->name,"rate"=>request()->rate]);
-       
              $newspecialEquipment=SpecialEquipment::where("id",$id)
                   ->where("user_id",$user_id)
                   ->first(); 
 
           return response()->json(['message' => 'Special Equipment successfully Deleted 👍','specialEquipment'=>$newspecialEquipment],200); 
       } catch (\Throwable $th) {
-          throw $th;
+        //   throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
-        
       }
  }
  public function get($skill_id)
