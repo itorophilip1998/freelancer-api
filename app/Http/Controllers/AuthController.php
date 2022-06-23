@@ -75,7 +75,6 @@ class AuthController extends Controller
         //    throw $th; 
         return response()->json(['message' => 'Mail was not sent!  check email address and try again ⚠️'], 401); 
     }
-
         return response()->json([
             'message' => "User successfully registered 👍,  please verify your account 👉 <$request->email>",
         ], 200);
