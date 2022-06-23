@@ -25,6 +25,7 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['message' => 'Unauthorized ⚠️'], 401);
         }
+        dd("code has reach the backend");
         // $verified=User::where("email",$request->email)
         // ->first(); 
         
