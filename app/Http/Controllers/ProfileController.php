@@ -28,7 +28,7 @@ class ProfileController extends Controller
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             } 
-             $profile = Profile::find($user_id);  
+             $profile = Profile::where("user_id",$user_id);  
             $profile->update(array_merge(
                     $validator->validated() 
                 ));

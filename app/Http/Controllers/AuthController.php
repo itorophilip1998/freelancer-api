@@ -136,8 +136,6 @@ class AuthController extends Controller
     }
      
     protected function createNewToken($token){ 
-           
-         
        try {
           $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
