@@ -28,11 +28,12 @@ class ProfileController extends Controller
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             } 
-             $profile = Profile::where("user_id",$user_id);  
+            $profile = Profile::where("user_id",$user_id);  
+            $newprofile=$profile;
             $profile->update(array_merge(
                     $validator->validated() 
                 ));
-        return response()->json(['message' => 'Profile successfully updated 👍','profile'=>$profile],200); 
+        return response()->json(['message' => 'Profile successfully updated 👍','profile'=>$newprofile],200); 
         } catch (\Throwable $th) {
             // throw $th;
             return response()->json([
