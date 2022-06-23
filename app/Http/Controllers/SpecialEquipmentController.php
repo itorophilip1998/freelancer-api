@@ -37,7 +37,6 @@ class SpecialEquipmentController extends Controller
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         
         }
-        
     }
  public function update($id)
  {
