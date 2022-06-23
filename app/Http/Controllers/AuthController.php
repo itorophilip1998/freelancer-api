@@ -26,12 +26,13 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized ⚠️'], 401);
         }
         $verified=User::where("email",$request->email)
+        ->where("email_verified_at","<>",null)
         ->first(); 
-        dd("code has reach the backend",$verified);
+ 
         
-        //  if (!$verified && !$verified ->email_verified_at) {
-        //    return response()->json(['message' => 'Account not verified ⚠️'], 401);
-        // }
+         if (!$verified) {
+           return response()->json(['message' => 'Account not verified ⚠️'], 401);
+        }
         return $this->createNewToken($token);
     } catch (\Throwable $th) { 
             return response()->json([
