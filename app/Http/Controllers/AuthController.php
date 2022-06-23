@@ -136,8 +136,7 @@ class AuthController extends Controller
     }
      
     protected function createNewToken($token){ 
-          
-         dd("email_verified_at",auth()->user()["id"]);
+           
          
        try {
           $id=auth()->user(); 
