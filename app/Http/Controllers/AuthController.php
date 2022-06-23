@@ -29,7 +29,6 @@ class AuthController extends Controller
         ->where("email_verified_at","<>",null)
         ->first(); 
         
-        
          if (!$verified) {
            return response()->json(['message' => 'Account not verified ⚠️'], 401);
         }
@@ -137,7 +136,8 @@ class AuthController extends Controller
     }
      
     protected function createNewToken($token){ 
-         dd("email_verified_at");
+          
+         dd("email_verified_at",auth()->user());
 
        try {
           $id=auth()->user(); 
