@@ -67,6 +67,7 @@ class SpecialEquipmentController extends Controller
                   ->where("user_id",$user_id)
                   ->first(); 
 
+
           return response()->json(['message' => 'Special Equipment successfully Deleted 👍','specialEquipment'=>$newspecialEquipment],200); 
       } catch (\Throwable $th) {
         //   throw $th;
