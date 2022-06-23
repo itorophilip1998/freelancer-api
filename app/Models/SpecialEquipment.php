@@ -14,6 +14,7 @@ class SpecialEquipment extends Model
      "user_id",
      "skill_id",
      "name",
+     "rate",
     ];
      public function user()
   {

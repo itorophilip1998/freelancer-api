@@ -93,7 +93,7 @@ Route::group([
     'prefix' => 'equipment'
 ], function ($router) {
     Route::post('/add', [SpecialEquipmentController::class, 'add']);
-    Route::delete('/remove/{id}', [SpecialEquipmentController::class, 'remove']);
+    Route::post('/update/{id}', [SpecialEquipmentController::class, 'update']);
     Route::get('/get/{skill_id}', [SpecialEquipmentController::class, 'get']);
  });
  

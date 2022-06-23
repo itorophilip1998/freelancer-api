@@ -16,7 +16,8 @@ class SpecialEquipmentController extends Controller
                 $validator = Validator::make(request()->all(), [
                 'name' => 'required|string', 
                 'skill_id' => 'required|integer', 
-                'user_id' => 'required|string' 
+                'user_id' => 'required|string',
+                'rate' => 'required|string',
             ]);
 
       
@@ -24,7 +25,6 @@ class SpecialEquipmentController extends Controller
                 return response()->json($validator->errors(), 422);
             }
            
-              
              $specialEquipment = SpecialEquipment::create(array_merge(
                     $validator->validated() 
                 ));
@@ -39,21 +39,35 @@ class SpecialEquipmentController extends Controller
         }
         
     }
- public function remove($id)
+ public function update($id)
  {
       try {
             if(!auth()->check()){
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             } 
-          $specialEquipment=SpecialEquipment::where("id",$id)
-          ->where("user_id",auth()->user()["id"])
-          ->delete();
-          if(!$specialEquipment)  return response()->json(['message' => 'Sorry this specialEquipment does not belong to you or does not exist⚠️','specialEquipment'=>$specialEquipment],401); 
+             $validator = Validator::make(request()->all(), [
+                'name' => 'required|string',  
+                'rate' => 'required|string'
+            ]);
+      
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            $user_id=auth()->user()->id;
 
-          return response()->json(['message' => 'Special Equipment successfully Deleted 👍','specialEquipment'=>$specialEquipment],200); 
+            $specialEquipment=SpecialEquipment::where("id",$id)
+            ->where("user_id",$user_id)->first();
+          
+          if(!$specialEquipment)  return response()->json(['message' => 'Sorry this Special Equipment does not belong to you or does not exist⚠️','specialEquipment'=>$specialEquipment],401); 
+             $specialEquipment->update(["name"=>request()->name,"rate"=>request()->rate]);
+       
+             $newspecialEquipment=SpecialEquipment::where("id",$id)
+                  ->where("user_id",$user_id)
+                  ->first(); 
 
+          return response()->json(['message' => 'Special Equipment successfully Deleted 👍','specialEquipment'=>$newspecialEquipment],200); 
       } catch (\Throwable $th) {
-        //   throw $th;
+          throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         
