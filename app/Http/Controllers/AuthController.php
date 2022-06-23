@@ -126,14 +126,13 @@ class AuthController extends Controller
        }
         $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
-            ->with("profle","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
             ->first(); 
         return response()->json(["user"=>$authUser]);
      } catch (\Throwable $th) {
          //throw $th;
            return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
-        
      }
     }
      
@@ -142,7 +141,7 @@ class AuthController extends Controller
        try {
           $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
-            ->with("profle","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
             ->first(); 
            return response()->json([
            'message' => 'User successfully signedIn 👍',

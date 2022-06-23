@@ -32,11 +32,8 @@ class UserController extends Controller
             // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'],500);
-                
         }
-        
     }
-
      public function getUser($user_id)
  {
       try {

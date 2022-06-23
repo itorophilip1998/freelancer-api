@@ -32,7 +32,7 @@ class ProfileController extends Controller
             $profile->update(array_merge(
                     $validator->validated() 
                 ));
-            return response()->json(['message' => 'Profile successfully updated 👍','profile'=>$profile],200); 
+        return response()->json(['message' => 'Profile successfully updated 👍','profile'=>$profile],200); 
         } catch (\Throwable $th) {
             // throw $th;
             return response()->json([
