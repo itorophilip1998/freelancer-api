@@ -22,10 +22,10 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        if (! $token = auth()->attempt($validator->validated())) {
+        if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['message' => 'Unauthorized ⚠️'], 401);
         }
-        $verified=User::where("email",$request->email) 
+        $verified=User::where("email",$request->email)
         ->first(); 
          if (!$verified->email_verified_at) {
            return response()->json(['message' => 'Account not verified ⚠️'], 401);
@@ -35,7 +35,6 @@ class AuthController extends Controller
         throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
-        
     }
     }
     
