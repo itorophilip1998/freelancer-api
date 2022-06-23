@@ -24,7 +24,6 @@ class ProfileController extends Controller
                   "linkedin_username"=>'nullable|string',
                   "twitter_username"=>'nullable|string',
             ]); 
-            
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             } 

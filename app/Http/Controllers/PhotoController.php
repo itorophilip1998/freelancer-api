@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL; 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PhotoController extends Controller
 {
-    public function add()
+    public function add(Request  $request)
     { 
       try {      
             if(!auth()->check()){
@@ -19,20 +21,20 @@ class PhotoController extends Controller
                 'user_id' => 'required|string',
                 'is_base64' => 'nullable|bool',
             ]);
+
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             }
             
+            
             if(request()->is_base64){ 
-            $img = request()->photo;
-            $folderPath = "photo"; //path location
-            $image_parts = explode(";base64,", $img);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $uniqid = uniqid();
-            $file = $folderPath . $uniqid . '.'.$image_type;
-           return  file_put_contents($file, $image_base64);
+     
+              $base64_str = substr($request->base64_image, strpos($request->base64_image, ",")+1);
+              $image = base64_decode($base64_str); 
+              Storage::disk('local')->put(auth()->user()["firstname"], $image);
+              //decode base64 string
+              $image = base64_decode($base64_str);
+              
             }
 
             // create profile picture if there is no picture for frontend
