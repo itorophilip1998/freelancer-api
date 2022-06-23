@@ -33,8 +33,8 @@ class AuthController extends Controller
         return $this->createNewToken($token);
     } catch (\Throwable $th) {
         return  $th;
-          return response()->json([
-           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        //   return response()->json([
+        //    'message' => 'This error is from the backend, please contact the backend developer'],500);
     }
     }
     
