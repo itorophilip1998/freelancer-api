@@ -137,8 +137,8 @@ class AuthController extends Controller
      
     protected function createNewToken($token){ 
           
-         dd("email_verified_at",auth()->user());
-
+         dd("email_verified_at",auth()->user()["id"]);
+         
        try {
           $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
