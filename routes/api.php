@@ -143,3 +143,5 @@ Route::group([
   //--filter by users with only Equipment  functionality
   //--filter by price range  functionality
   //--filter by rating range functionality 
+
+  
