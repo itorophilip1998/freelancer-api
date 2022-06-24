@@ -23,6 +23,7 @@ class ProfileController extends Controller
                   "instagram_username"=>'nullable|string',
                   "linkedin_username"=>'nullable|string',
                   "twitter_username"=>'nullable|string',
+                  "socialmedia_handle"=>'nullable|string',
             ]); 
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);

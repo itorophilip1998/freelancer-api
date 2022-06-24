@@ -16,7 +16,8 @@ class Profile extends Model
         "facebook_username", 
         "instagram_username", 
         "linkedin_username", 
-        "twitter_username"
+        "twitter_username",
+        "socialmedia_handle"
     ];
 
 public function user()
