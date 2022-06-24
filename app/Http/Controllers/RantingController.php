@@ -30,7 +30,8 @@ class RantingController extends Controller
             return response()->json(['message' => "Please you cannot rate and review your self ⚠️"],401); 
                 
             }
-            $rater_exist=Ranting::where("user_id",request()->user_id)->first();
+            $rater_exist=Ranting::where("user_id",request()->user_id)
+            ->where("rater_id",request()->rater_id)->first();
             if($rater_exist){
                 $rater_exist->update(["rate"=>request()->rate,"reviews"=>request()->reviews]);
                return response()->json(['message' => 'Rating successfully updated 👍','ranting'=>$rater_exist],200); 
@@ -75,7 +76,7 @@ class RantingController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
         $ranting=Ranting::where("user_id",$user_id)->with("user")->get();
-          if(count($ranting) ===0)  return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️','ratings'=>$ranting],401); 
+         if(count($ranting) ===0)  return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️','ratings'=>$ranting],401); 
        $arr=$ranting;
         $count = 0;
         $sum = 0;
