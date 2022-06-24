@@ -56,8 +56,8 @@ class SkillController extends Controller
               $user_id=auth()->user()->id;
           $skill=Skill::where("id",$id)
           ->where("user_id", $user_id);
-          $skill->update(["name"=>request()->name,"rate"=>request()->rate]);
           if(!$skill)  return response()->json(['message' => 'Sorry this skill does not belong to you or does not exist⚠️','skill'=>$skill],401); 
+          $skill->update(["name"=>request()->name,"rate"=>request()->rate]);
              $newskill=Skill::where("id",$id)
                   ->where("user_id",$user_id)
                   ->first();

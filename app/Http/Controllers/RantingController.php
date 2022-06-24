@@ -75,6 +75,8 @@ class RantingController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
         $ranting=Ranting::where("user_id",$user_id)->with("user")->get();
+        
+          if(count($ranting) >=0)  return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️','ratings'=>$ranting],401); 
        
        $arr=$ranting;
         $count = 0;
@@ -86,7 +88,8 @@ class RantingController extends Controller
         }
         $star= $sum / $count;
         $rate=strlen( $star) > 3 ? substr($star, 0, 3)  : $star; 
-        return response()->json(['message' => 'Rating successfully Loaded 👍','rate_star'=>floatval($rate),'rantings'=>$ranting],200); 
+        
+        return response()->json(['message' => 'Rating successfully Loaded 👍','rate_star'=>floatval($rate),'ratings'=>$ranting],200); 
       } catch (\Throwable $th) {
         //   throw $th;
           return response()->json([
