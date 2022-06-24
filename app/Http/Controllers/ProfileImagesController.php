@@ -51,7 +51,7 @@ class ProfileImagesController extends Controller
                     
                 }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         }

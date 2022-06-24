@@ -52,12 +52,10 @@ class PhotoController extends Controller
                      ] );
                       return  response()->json(['message' => 'Photo successfully updated 👍','Photo'=>$userExist],200); 
                 
-                          
-      
-         
+                    
           }
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         }
