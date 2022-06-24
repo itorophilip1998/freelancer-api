@@ -55,7 +55,6 @@ class ProfileImagesController extends Controller
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         }
-        
     }
  public function remove($id)
  {
