@@ -75,9 +75,7 @@ class RantingController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
         $ranting=Ranting::where("user_id",$user_id)->with("user")->get();
-        
-          if(count($ranting) >=0)  return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️','ratings'=>$ranting],401); 
-       
+          if(count($ranting) ===0)  return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️','ratings'=>$ranting],401); 
        $arr=$ranting;
         $count = 0;
         $sum = 0;
