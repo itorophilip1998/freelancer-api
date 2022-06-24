@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StoreProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
+// use App\Http\Requests\StoreProfileRequest;
+// use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -41,7 +41,7 @@ class ProfileController extends Controller
         } 
     }
 
-     public function getProfile($user_id)
+ public function getProfile($user_id)
  {
       try {
             if(!auth()->check()){
