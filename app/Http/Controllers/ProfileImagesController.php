@@ -32,20 +32,18 @@ class ProfileImagesController extends Controller
             // create profile picture if there is no picture
             if(request()->photo){ 
                     $userExist=ProfileImages::where( "user_id",request()->user_id)->get();   
-                      $file_path=URL::to("storage")."/gallery"; 
+                      $file_path="storage/gallery";  
                
           // Checking whether a file is directory or not 
                 if (!file_exists($file_path)) { 
                            mkdir($file_path, 0770, true); 
-
                 } 
                 
                     if(count( $userExist) >= 5){
                       return response()->json(['message' => 'You should not create more than (5) images in your gallery ,remove some images to create another⚠️',"length"=>count( $userExist),'gallery'=>$userExist],401); 
                     }
 
-                    $user=auth()->user(); 
-                      
+                    $user=auth()->user();  
                 
                       $base64_str = substr(request()->photo, strpos(request()->photo, ",")+1);
                       $file = base64_decode($base64_str); 
