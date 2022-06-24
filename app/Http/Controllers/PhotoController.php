@@ -33,7 +33,7 @@ class PhotoController extends Controller
                     //   $img =request()->photo->storeAs('photo',$photo,'public'); //upload  
                     //   $image=URL::to("storage")."/".$img;
                     $userExist=Photo::where( "user_id",request()->user_id)->first();    
-                            $file_path="storage/gallery";  
+                            $file_path="storage/photo";  
                
           // Checking whether a file is directory or not 
                 if (!file_exists($file_path)) { 
