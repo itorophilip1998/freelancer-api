@@ -22,7 +22,7 @@ class ProfileImagesController extends Controller
             }  
                 $validator = Validator::make(request()->all(), [
                 'photo' => 'required|string',  
-                'user_id' => 'required|string' 
+                'user_id' => 'required|integer' 
             ]);
 
       
@@ -59,7 +59,7 @@ class ProfileImagesController extends Controller
                     
                 }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         }

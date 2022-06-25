@@ -12,6 +12,7 @@ use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProfileImagesController;
+use App\Http\Controllers\SaveController;
 use App\Http\Controllers\SpecialEquipmentController; 
 
 //  Auth route
@@ -130,6 +131,17 @@ Route::group([
 ], function ($router) {
     Route::get('/add', [SearchQueryController::class, 'query']); 
  });
+
+ Route::group([ 
+    'prefix' => 'save'
+], function ($router) {
+    Route::post('/add', [SaveController::class, 'add']); 
+    Route::get('/get/{user_id}', [SaveController::class, 'get']); 
+ });
+ 
+
+
+//  --add and remove update on 1 route --doing
  
  //TODO:Search query user by queris and sort and relations  
   //--search by Search Service{skills} integration

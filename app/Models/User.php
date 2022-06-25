@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Save;
 use App\Models\Photo;
 use App\Models\Skill;
-use App\Models\Profile;
 // use Laravel\Sanctum\HasApiTokens;
+use App\Models\Profile;
 use App\Models\Ranting;
 use App\Models\BankDetails;
 use App\Models\CardDetails;
@@ -103,5 +104,9 @@ class User extends Authenticatable implements JWTSubject
     public function profileImage()
     { 
           return $this->hasOne(Photo::class); 
+    }
+    public function savedUser()
+    { 
+          return $this->hasMany(Save::class); 
     }
 }  
