@@ -2,7 +2,10 @@
  
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SaveController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InboxController;
+use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\ProfileController;
@@ -10,9 +13,8 @@ use App\Http\Controllers\RantingController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
-use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\SearchQueryController;
 use App\Http\Controllers\ProfileImagesController;
-use App\Http\Controllers\SaveController;
 use App\Http\Controllers\SpecialEquipmentController; 
 
 //  Auth route
@@ -129,7 +131,7 @@ Route::group([
 Route::group([ 
     'prefix' => 'search'
 ], function ($router) {
-    Route::get('/add', [SearchQueryController::class, 'query']); 
+    Route::get('/', [SearchQueryController::class, 'query']); 
  });
 
  Route::group([ 
@@ -139,21 +141,15 @@ Route::group([
     Route::get('/get/{user_id}', [SaveController::class, 'get']); 
  });
  
-
-
-//  --add and remove update on 1 route --doing
+ Route::group([ 
+    'prefix' => 'inbox'
+], function ($router) {
+    Route::post('/send', [InboxController::class, 'add']); 
+    Route::get('/get/{friend_id}', [InboxController::class, 'get']);  
+    Route::get('/friends/{user_id}', [InboxController::class, 'myFriends']);  
+ });
  
- //TODO:Search query user by queris and sort and relations  
-  //--search by Search Service{skills} integration
-  //--search by Search Location integration
-  //--search by Date of availability integration
-  
-  //--sort by users with only Equipment  method
-  //--sort by price range  method
-  //--sort by rating range method 
-  
-  //--filter by users with only Equipment  functionality
-  //--filter by price range  functionality
-  //--filter by rating range functionality 
-
-  
+   
+  //--search by Date of availability integration --design not clear
+//   --get all friends --done but fixes
+ 

@@ -4,9 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Save;
+use App\Models\Inbox;
 use App\Models\Photo;
-use App\Models\Skill;
 // use Laravel\Sanctum\HasApiTokens;
+use App\Models\Skill;
 use App\Models\Profile;
 use App\Models\Ranting;
 use App\Models\BankDetails;
@@ -108,5 +109,9 @@ class User extends Authenticatable implements JWTSubject
     public function savedUser()
     { 
           return $this->hasMany(Save::class); 
+    }
+    public function inbox()
+    { 
+          return $this->hasMany(Inbox::class); 
     }
 }  

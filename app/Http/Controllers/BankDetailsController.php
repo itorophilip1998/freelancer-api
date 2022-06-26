@@ -59,9 +59,9 @@ class BankDetailsController extends Controller
         //   throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
-        
       }
  }
+ 
  public function get($user_id)
  {
       try {
