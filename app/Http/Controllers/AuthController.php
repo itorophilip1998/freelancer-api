@@ -61,7 +61,7 @@ class AuthController extends Controller
                     'password' => bcrypt($request->password),
                     "verify_token"=>$verify_token
                     ]
-           ))->profle()->create();
+           ))->profile()->create();
            $uri=URL::to("/api/verify/$verify_token/$request->email"); 
         $mail_data=[
             "subject"=>"Welcome to Freelancer",
