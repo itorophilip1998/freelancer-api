@@ -26,9 +26,15 @@ class FriendsController extends Controller
                 return response()->json($validator->errors(), 422);
             } 
 
-             if(request()->rater_id===request()->user_id){
-            return response()->json(['message' => "Please you cannot inbox your self ⚠️"],401); 
+             if(request()->user_id===request()->user_id){
+            return response()->json(['message' => "Please you cannot add your self as friend ⚠️"],401); 
                 
+            } 
+            $userExist = Friends::where('user_id',request()->user_id)
+            ->where('friend_id',request()->friend_id)->first();
+            
+             if($userExist){
+            return response()->json(['message' => "You all aleady have this user ⚠️"],401); 
             } 
              $Inbox = Friends::create(array_merge(
                     $validator->validated(),
@@ -45,6 +51,7 @@ class FriendsController extends Controller
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         }
     }
+    
     public function myFriends($user_id){
        try {
             if(!auth()->check()){
@@ -52,7 +59,7 @@ class FriendsController extends Controller
             }
             
             $Inbox = Friends::where('user_id',$user_id)
-            ->orWhere('user_id',$user_id)
+            ->orWhere('friend_id',$user_id)
             ->latest()
             ->with('users_friend.profile','users_friend.profileImage')->get(); 
              return response()->json(['message' => 'Inbox successfully Loaded 👍','friends'=>$Inbox],200);
