@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInboxesTable extends Migration
+class CreateFriendsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateInboxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('inboxes', function (Blueprint $table) {
-           $table->id()->autoIncrement(); 
+        Schema::create('friends', function (Blueprint $table) {
+            $table->id()->autoIncrement(); 
             $table->unsignedBigInteger("user_id");  
             $table->unsignedBigInteger("friend_id");  
             $table->longText("message");  
@@ -32,6 +32,6 @@ class CreateInboxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inboxes');
+        Schema::dropIfExists('friends');
     }
 }

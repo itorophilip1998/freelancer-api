@@ -8,6 +8,7 @@ use App\Http\Controllers\InboxController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\VerifyController;
+use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RantingController;
 use App\Http\Controllers\PasswordController;
@@ -146,10 +147,15 @@ Route::group([
 ], function ($router) {
     Route::post('/send', [InboxController::class, 'add']); 
     Route::get('/get/{friend_id}', [InboxController::class, 'get']);  
-    Route::get('/friends/{user_id}', [InboxController::class, 'myFriends']);  
  });
  
-   
+Route::group([ 
+    'prefix' => 'friends'
+], function ($router) {  
+    Route::get('/{user_id}', [FriendsController::class, 'myFriends']);  
+    Route::post('/add', [FriendsController::class, 'add']);  
+ });
+ 
   //--search by Date of availability integration --design not clear
 //   --get all friends --done but fixes
  
