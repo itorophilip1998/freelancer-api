@@ -36,10 +36,10 @@ class PasswordController extends Controller
          if(!$user_reset->first()){
          return response()->json(['error' => 'Invalid token⚠️'], 401);  
         }  
-        $checkMinute=Carbon::now()->diffInMinutes($checkTime->created_at ?? 0);
-         if($checkMinute >= 15){
-            return response()->json(['error' => "This token expired ".  ($checkMinute - 15) ." minute ago⚠️"], 401);  
-        } 
+        // $checkMinute=Carbon::now()->diffInMinutes($checkTime->created_at ?? 0);
+        //  if($checkMinute >= 15){
+        //     return response()->json(['error' => "This token expired ".  ($checkMinute - 15) ." minute ago⚠️"], 401);  
+        // } 
         
          $user->update([
              'password' => bcrypt($request->password) 
