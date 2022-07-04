@@ -22,9 +22,9 @@ class FriendsController extends Controller
                 'friend_id' => 'required|integer' 
             ]); 
       
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            } 
+                if ($validator->fails()) {
+                    return response()->json($validator->errors(), 422);
+                } 
 
              if(request()->user_id===request()->friend_id){
             return response()->json(['message' => "Please you cannot add your self as friend ⚠️"],401); 

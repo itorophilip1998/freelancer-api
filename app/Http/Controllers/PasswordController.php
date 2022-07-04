@@ -52,7 +52,7 @@ class PasswordController extends Controller
       //throw $th;
            return response()->json([
            'error' => 'This error is from the backend, please contact the backend developer'],500);
-        
+
     }
     }
 
@@ -70,7 +70,7 @@ class PasswordController extends Controller
         return response()->json(['error' => 'This user does not exist⚠️'], 401);  
         } 
         $token=Str::random(10);
-         $uri=URL::to("/?token=$token&email=$request->email");
+         $uri=env("FronEndUrl")."/reset/?token=$token&email=$request->email";
            $mail_data=[
             "subject"=>"Password Reset",
             "view"=>"emails.reset",

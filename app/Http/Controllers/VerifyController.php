@@ -23,6 +23,10 @@ class VerifyController extends Controller
                
              $user->update(["email_verified_at"=>now()]); 
              $user->update(["verify_token"=>null]); 
+             
+             
+             return redirect(env("FronEndUrl").'/signin');
+             
               return response()->json([
             'message' => "Your account was successfully verified👉 <$email>",
         ], 200);

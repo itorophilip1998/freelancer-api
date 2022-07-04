@@ -158,4 +158,4 @@ Route::group([
  
   //--search by Date of availability integration --design not clear
 //   --get all friends --done but fixes
- 
+//  --API reset password time is incorrect --text
