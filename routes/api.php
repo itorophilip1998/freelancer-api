@@ -1,5 +1,4 @@
 <?php
- 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SaveController;
@@ -7,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\BookedController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\ProfileController;
@@ -16,7 +16,7 @@ use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
 use App\Http\Controllers\SearchQueryController;
 use App\Http\Controllers\ProfileImagesController;
-use App\Http\Controllers\SpecialEquipmentController; 
+use App\Http\Controllers\SpecialEquipmentController;
 
 //  Auth route
 Route::group([
@@ -27,135 +27,145 @@ Route::group([
     Route::post('/signin', [AuthController::class, 'signin']);
     Route::post('/signout', [AuthController::class, 'signout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user', [AuthController::class, 'userProfile']);       
-}); 
+    Route::get('/user', [AuthController::class, 'userProfile']);
+});
 
- //  Verify route
+//  Verify route
 Route::group([
     'middleware' => 'api',
     'prefix' => 'verify'
-], function ($router) { 
-    Route::get('/{token}/{email}', [VerifyController::class, 'verify']);    
-    Route::post('/resend', [VerifyController::class, 'resend']);    
-}); 
+], function ($router) {
+    Route::get('/{token}/{email}', [VerifyController::class, 'verify']);
+    Route::post('/resend', [VerifyController::class, 'resend']);
+});
 
- //  Password route
+//  Password route
 Route::group([
     'middleware' => 'api',
     'prefix' => 'password'
-], function ($router) { 
-    Route::post('/send-reset-link', [PasswordController::class, 'sendReset']);     
-    Route::post('/reset', [PasswordController::class, 'reset']);    
-}); 
+], function ($router) {
+    Route::post('/send-reset-link', [PasswordController::class, 'sendReset']);
+    Route::post('/reset', [PasswordController::class, 'reset']);
+});
 
 //  User Profile route
 Route::group([
     'middleware' => 'api',
     'prefix' => 'user'
 ], function ($router) {
-    Route::post('/update/{user_id}', [UserController::class, 'updateUser']);   
-    Route::get('/get/{user_id}', [UserController::class, 'getUser']);   
-}); 
+    Route::post('/update/{user_id}', [UserController::class, 'updateUser']);
+    Route::get('/get/{user_id}', [UserController::class, 'getUser']);
+});
 
 //  Update Profile route
 Route::group([
     'middleware' => 'api',
     'prefix' => 'profile'
 ], function ($router) {
-    Route::post('/update/{user_id}', [ProfileController::class, 'updateProfile']);   
-    Route::get('/get/{user_id}', [ProfileController::class, 'getProfile']);   
+    Route::post('/update/{user_id}', [ProfileController::class, 'updateProfile']);
+    Route::get('/get/{user_id}', [ProfileController::class, 'getProfile']);
 });
 
 //  Upload Profile Image  Details 
- Route::group([ 
+Route::group([
     'prefix' => 'photo'
 ], function ($router) {
     Route::post('/add', [PhotoController::class, 'add']);
     Route::delete('/remove/{id}', [PhotoController::class, 'remove']);
     Route::get('/get/{user_id}', [PhotoController::class, 'get']);
- });
+});
 //  Upload Profile Image  Details 
- Route::group([ 
+Route::group([
     'prefix' => 'gallery'
 ], function ($router) {
     Route::post('/add', [ProfileImagesController::class, 'add']);
     Route::delete('/remove/{id}', [ProfileImagesController::class, 'remove']);
     Route::get('/get/{user_id}', [ProfileImagesController::class, 'get']);
- });
- 
+});
+
 //  Skills Details 
- Route::group([ 
+Route::group([
     'prefix' => 'skills'
 ], function ($router) {
     Route::post('/add', [SkillController::class, 'add']);
     Route::post('/update/{id}', [SkillController::class, 'update']);
     Route::get('/get/{user_id}', [SkillController::class, 'get']);
- });
- 
+});
+
 //  Special Equipment Details 
- Route::group([ 
+Route::group([
     'prefix' => 'equipment'
 ], function ($router) {
     Route::post('/add', [SpecialEquipmentController::class, 'add']);
     Route::post('/update/{id}', [SpecialEquipmentController::class, 'update']);
     Route::get('/get/{skill_id}', [SpecialEquipmentController::class, 'get']);
- });
- 
- //  Rating Details 
- Route::group([ 
+    Route::get('/by-userid/{user_id}', [SpecialEquipmentController::class, 'getUserId']);
+});
+
+//  Rating Details 
+Route::group([
     'prefix' => 'rating'
 ], function ($router) {
     Route::post('/add', [RantingController::class, 'add']);
     Route::delete('/remove/{id}', [RantingController::class, 'remove']);
     Route::get('/get/{user_id}', [RantingController::class, 'get']);
- });
+});
 
 //  Card Details 
- Route::group([ 
+Route::group([
     'prefix' => 'card'
 ], function ($router) {
     Route::post('/add', [CardDetailsController::class, 'add']);
     Route::delete('/remove/{id}', [CardDetailsController::class, 'remove']);
     Route::get('/get/{user_id}', [CardDetailsController::class, 'get']);
- });
+});
 
- //Bank Details
- Route::group([ 
+//Bank Details
+Route::group([
     'prefix' => 'bank'
 ], function ($router) {
     Route::post('/add', [BankDetailsController::class, 'add']);
     Route::delete('/remove/{id}', [BankDetailsController::class, 'remove']);
     Route::get('/get/{user_id}', [BankDetailsController::class, 'get']);
- });
+});
 
- //Search Query Options
-Route::group([ 
+//Search Query Options
+Route::group([
     'prefix' => 'search'
 ], function ($router) {
-    Route::get('/', [SearchQueryController::class, 'query']); 
- });
+    Route::get('/', [SearchQueryController::class, 'query']);
+});
 
- Route::group([ 
+// saved
+Route::group([
     'prefix' => 'save'
 ], function ($router) {
-    Route::post('/add', [SaveController::class, 'add']); 
-    Route::get('/get/{user_id}', [SaveController::class, 'get']); 
- });
- 
- Route::group([ 
+    Route::post('/add', [SaveController::class, 'add']);
+    Route::get('/get/{user_id}', [SaveController::class, 'get']);
+});
+
+// indbox
+Route::group([
     'prefix' => 'inbox'
 ], function ($router) {
-    Route::post('/send', [InboxController::class, 'add']); 
-    Route::get('/get/{friend_id}', [InboxController::class, 'get']);  
- });
- 
-Route::group([ 
+    Route::post('/send', [InboxController::class, 'add']);
+    Route::get('/get/{friend_id}', [InboxController::class, 'get']);
+});
+
+// friends
+Route::group([
     'prefix' => 'friends'
-], function ($router) {  
-    Route::get('/{user_id}', [FriendsController::class, 'myFriends']);  
-    Route::post('/add', [FriendsController::class, 'add']);  
- });
- 
-  //--search by Date of availability integration --design not clear
-//   --get all friends --done but fixes
-//  --API reset password time is incorrect --text
+], function ($router) {
+    Route::get('/{user_id}', [FriendsController::class, 'myFriends']);
+    Route::post('/add', [FriendsController::class, 'add']);
+});
+
+// booked
+Route::group([
+    'prefix' => 'book'
+], function ($router) {
+    Route::post('/add', [BookedController::class, 'add']);
+    Route::post('/cancel/{booked_id}', [BookedController::class, 'cancel']);
+    Route::get('/get', [BookedController::class, 'get']);
+    Route::put('/completed/{booked_id}', [BookedController::class, 'completed']);
+});

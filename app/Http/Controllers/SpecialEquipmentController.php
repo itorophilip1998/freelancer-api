@@ -89,4 +89,19 @@ class SpecialEquipmentController extends Controller
         
       }
  }
+ public function getUserId($user_id)
+ {
+      try {
+            if(!auth()->check()){
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }  
+        $specialEquipment=SpecialEquipment::where("user_id",$user_id)->get();
+        return response()->json(['message' => 'Special Equipment successfully Loaded 👍','specialEquipment'=>$specialEquipment],200); 
+      } catch (\Throwable $th) {
+        //   throw $th;
+          return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+        
+      }
+ }
 }

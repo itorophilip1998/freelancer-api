@@ -11,21 +11,21 @@ class CreatePaymentsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('payments', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('payments');
-    }
-}
+    // public function down()
+    // {
+    //     Schema::dropIfExists('payments');
+    // }
+}  

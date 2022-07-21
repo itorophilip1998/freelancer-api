@@ -9,37 +9,68 @@ use Illuminate\Http\Request;
 
 class SearchQueryController extends Controller
 {
-    public function query(){
-     
-        $skills=$this->searchBySkills(request());
-        $location=$this->searchByLocation(request()["location"]);
- 
-        $userBySkill=User::whereIn("id",$skills)
-         ->orWhereIn("id",$location )
-        ->with("profile","skills")
-        ->get();
-        return $userBySkill;
+    public function query()
+    {
+        try {
+
+            if (!request()["skill"]) {
+
+                return response()->json(["message" => "please add a skill!"], 404);
+            }
+
+            $skills = $this->searchBySkills(request()["skill"]);
+            $location = $this->searchByLocation(request()["location"]);
+            // $date = $this->searchByDate(request()["date"]);
+
+            $userBySkill = User::whereIn("id", $skills)
+                ->orWhereIn("id", $location)
+                // ->orWhereIn("date", $date)
+                ->with("profile", "skills")
+                ->get();
+            return  response()->json([
+                "message"=>"Searched data loaded!",
+                "data"=>$userBySkill
+            ],200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-        //search... by profile
-    function searchByLocation($location){
-     $profile=Profile::where("location","LIKE","%$location%")->get();
-     if(count($profile) <=0)  return [];
-        $profile_user_id=[];
+    //search... by profile
+    function searchByLocation($location)
+    {
+        $profile = Profile::where("location", "LIKE", "%$location%")->get();
+        if (count($profile) <= 0)  return [];
+        $profile_user_id = [];
         foreach ($profile as $item) {
-          $profile_user_id[]= $item["user_id"]; 
-        } 
-    return $profile_user_id;
+            $profile_user_id[] = $item["user_id"];
+        }
+        return $profile_user_id;
     }
-     
-    function searchBySkills($req){ 
-     $skills=Skill::where("name","LIKE","%$req->skill%") 
-     ->get();
-     if(count($skills) <=0)  return [];
-         $skills_user_id=[];
+
+    // search by Skills
+    function searchBySkills($skill)
+    {
+        $skills = Skill::where("name", "LIKE", "%$skill%")
+          ->get();
+        if (count($skills) <= 0)  return [];
+        $skills_user_id = [];
         foreach ($skills as $item) {
-          $skills_user_id[]= $item["user_id"]; 
-        } 
-    return $skills_user_id;
+            $skills_user_id[] = $item["user_id"];
+        }
+        return $skills_user_id;
+    }
+
+    // search by Date
+    function searchByDate($date)
+    {
+        $skills = Skill::where("date", "LIKE", "%$date%")
+            ->get();
+        if (count($skills) <= 0)  return [];
+        $skills_user_id = [];
+        foreach ($skills as $item) {
+            $skills_user_id[] = $item["user_id"];
+        }
+        return $skills_user_id;
     }
 }
