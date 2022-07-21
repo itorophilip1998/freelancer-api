@@ -13,7 +13,7 @@ class Friends extends Model
         'user_id',
         'friend_id',
         'message',
-        'status' 
+        'status'
     ];
 
  public function user()

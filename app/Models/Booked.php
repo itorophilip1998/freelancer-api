@@ -34,4 +34,8 @@ class Booked extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function skill()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

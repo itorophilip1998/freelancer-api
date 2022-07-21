@@ -14,7 +14,7 @@ class BookedController extends Controller
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-            $validator = Validator::make(request()->all(), [ 
+            $validator = Validator::make(request()->all(), [
                 'skill_id' => 'required|integer',
                 'special_equipment_id' => 'required|array',
                 'is_rented' => 'required|boolean',
@@ -84,7 +84,10 @@ class BookedController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
 
-            $isMe = Booked::where(["user_id" => auth()->user()->id])->get();
+            $isMe = Booked::where(["user_id" => auth()->user()->id])
+                ->with("user.profileImage" ,"skill")
+
+                ->get();
             return response()->json([
                 'message' => ' successfully loaded booked user 👍',
                 'booked' => $isMe
@@ -114,6 +117,30 @@ class BookedController extends Controller
                 ["status" => "completed"]
             );
             return response()->json(['message' => ' successfully Completed a booked user 👍', 'booked' => $isMe], 200);
+        } catch (\Throwable $th) {
+            // throw $th;
+            return response()->json([
+                'message' => 'This error is from the backend, please contact the backend developer'
+            ], 500);
+        }
+    }
+
+    public function getBookedUsers()
+    {
+
+        try {
+            if (!auth()->check()) {
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }
+
+            $isMe = Booked::where(["booked_user_id" => auth()->user()->id])
+                ->with("user.profileImage", "skill")
+                ->get();
+
+            return response()->json([
+                'message' => ' successfully loaded booked user 👍',
+                'booked' => $isMe
+            ], 200);
         } catch (\Throwable $th) {
             // throw $th;
             return response()->json([
