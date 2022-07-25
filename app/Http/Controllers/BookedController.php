@@ -32,8 +32,8 @@ class BookedController extends Controller
 
 
 
-            if (request()->booked_user_id === auth()->user()->id) {
-                return response()->json(["message" => "Oops you acnnot book your self!"], 401);
+            if (request()->booked_user_id == auth()->user()->id) {
+                return response()->json(["message" => "Oops you cannot book your self!"], 401);
             }
 
             $data = Booked::create(array_merge(
@@ -85,8 +85,8 @@ class BookedController extends Controller
             }
 
             $isMe = Booked::where(["user_id" => auth()->user()->id])
-                ->with("user.profileImage" ,"skill")
-
+                ->where("booked_user_id", "!=", auth()->user()->id)
+                ->with("userbooked.profileImage", "userbooked.skills")
                 ->get();
             return response()->json([
                 'message' => ' successfully loaded booked user 👍',
@@ -127,22 +127,23 @@ class BookedController extends Controller
 
     public function getBookedUsers()
     {
-// dev
+        // dev
         try {
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
 
             $isMe = Booked::where(["booked_user_id" => auth()->user()->id])
-                ->with("user.profileImage", "skill")
+            ->where("booked_user_id", "!=", auth()->user()->id)
+            ->with("user.profileImage", "skill")
                 ->get();
 
             return response()->json([
-                'message' => ' successfully loaded booked user 👍',
+                'message' => ' successfully loaded All Users Who Book You(Auth User) 👍',
                 'booked' => $isMe
             ], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
