@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SaveController;
@@ -160,7 +161,7 @@ Route::group([
     Route::post('/add', [FriendsController::class, 'add']);
 });
 
-// booked
+// bookeded
 Route::group([
     'prefix' => 'book'
 ], function ($router) {
