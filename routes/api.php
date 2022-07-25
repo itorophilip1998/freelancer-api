@@ -169,5 +169,8 @@ Route::group([
     Route::post('/cancel/{booked_id}', [BookedController::class, 'cancel']);
     Route::get('/get', [BookedController::class, 'get']);
     Route::get('/booked-users', [BookedController::class, 'getBookedUsers']);
+
+
+
     Route::put('/completed/{booked_id}', [BookedController::class, 'completed']);
 });
