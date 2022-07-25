@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,6 +37,6 @@ class Booked extends Model
     }
     public function skill()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Skill::class);
     }
 }
