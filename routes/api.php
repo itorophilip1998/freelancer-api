@@ -153,7 +153,7 @@ Route::group([
     Route::get('/get/{friend_id}', [InboxController::class, 'get']);
 });
 
-// friends
+// friendsed
 Route::group([
     'prefix' => 'friends'
 ], function ($router) {
