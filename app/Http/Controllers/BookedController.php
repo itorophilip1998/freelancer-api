@@ -143,7 +143,7 @@ class BookedController extends Controller
                 'booked' => $isMe
             ], 200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
