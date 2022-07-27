@@ -57,7 +57,7 @@ class SaveController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
         $data=Save::where("user_id",$user_id)->with("user")->get();
-        return (Profile::where("user_id",$user_id)->get());
+        // return (Profile::where("user_id",$user_id)->get());
         return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍','saved'=>$data],200); 
       } catch (\Throwable $th) {
           throw $th;

@@ -23,7 +23,7 @@ class SearchQueryController extends Controller
             // $date = $this->searchByDate(request()["date"]);
 
             $userBySkill = User::whereIn("id", $skills)
-                ->where("id", $location) 
+                ->orWhereIn("id", $location) 
                 ->with("profile", "skills.specialEquipment")
                 ->get();
             return  response()->json([
@@ -31,7 +31,7 @@ class SearchQueryController extends Controller
                 "data"=>$userBySkill
             ],200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
         }
     }
 
