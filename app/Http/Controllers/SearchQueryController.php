@@ -43,7 +43,7 @@ class SearchQueryController extends Controller
                         $data['rate_star'] = floatval($rate);
                     } else {
                         $data['rate_star'] = 0;
-                    }  
+                    }
 
                     return $data;
                 }

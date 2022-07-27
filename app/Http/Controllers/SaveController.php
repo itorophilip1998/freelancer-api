@@ -53,52 +53,36 @@ class SaveController extends Controller
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-            $data = Save::where("user_id", $user_id)
-                ->with( "user.profile",   "user.profileImage",   "user.isSaved",    "user.skills.specialEquipment",     "user.ratings"  );
+            $data = Save::where("user_id", $user_id)->with([
+                "user.profile",
+                "user.profileImage",
+                "user.isSaved",
+                "user.skills.specialEquipment",
+                "user.ratings"
+            ])->get();
 
-
-            // $ids = [];
-            // $format = null;
-            // foreach ($data->get() as $item) {
-            //     $city = $item["user"]["profile"]["city"];
-            //     $ids = Profile::whereIn("city", $city)->get();
-            // }
-
-            // foreach ($data->get() as $newitem) {
-            //     $city = $newitem["user"]["profile"]["city"];
-            //     $format = [
-            //         "city" => $city,
-            //         "data" => $data->whereIn("user_id", $ids)->get()
-            //     ];
-            // }
- 
-
-            return $data;
-
-
-
-            // $newFormat = $format()->map(function ($data) {
-            //     $ranting = $data["user"]["ratings"];
-            //     if (count($ranting) === 0) {
-            //         return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️', 'ratings' => $ranting], 401);
-            //     }
-            //     $arr = $ranting;
-            //     $count = 0;
-            //     $sum = 0;
-            //     $index = 0;
-            //     foreach ($arr as $item) {
-            //         $count += $item["rate"];
-            //         $sum += $item["rate"] * ($index += 1);
-            //     }
-            //     $star = $sum / $count;
-            //     $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
-
-            //     $data['rate_star'] = floatval($rate);
-            //     return $data;
-            // });
-            // return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
+            $newFormat = $data->map(function ($data) {
+                $ranting = $data["user"]["ratings"];
+                $arr = $ranting;
+                $count = 0;
+                $sum = 0;
+                $index = 0;
+                foreach ($arr as $item) {
+                    $count += $item["rate"];
+                    $sum += $item["rate"] * ($index += 1);
+                }
+                if ($count != 0) {
+                    $star = $sum / $count;
+                    $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
+                    $data['rate_star'] = floatval($rate);
+                } else {
+                    $data['rate_star'] = 0;
+                }
+                return $data;
+            });
+            return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
