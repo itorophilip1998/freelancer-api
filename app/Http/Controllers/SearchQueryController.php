@@ -27,28 +27,28 @@ class SearchQueryController extends Controller
                 ->with("profile", "skills.specialEquipment", "isSaved", "profileImage", "ratings", "gallery")
                 ->get()
                 ->map(
-                    function ($data) { 
+                    function ($data) {
                         if (count($data["ratings"]) === 0) {
                             return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️', 'ratings' => $ranting], 401);
                         }
-                        $arr = $data["ratings"];
+
                         $count = 0;
                         $sum = 0;
                         $index = 0;
-                        foreach ($arr as $item) {
+                        foreach ($data["ratings"] as $item) {
                             $count += $item["rate"];
                             $sum += $item["rate"] * ($index += 1);
                         }
                         $star = $sum / $count;
-                        $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star; 
-                       
+                        $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
+
                         $data['rate_star'] = floatval($rate);
                         return $data;
                     }
                 );
 
             return  response()->json([
-                "message" => "Searched data loaded!","data" => $userBySkill
+                "message" => "Searched data loaded!", "data" => $userBySkill
             ], 200);
         } catch (\Throwable $th) {
             throw $th;
