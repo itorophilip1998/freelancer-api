@@ -27,12 +27,11 @@ class SearchQueryController extends Controller
                 ->with("profile", "skills.specialEquipment", "isSaved", "profileImage", "ratings", "gallery")
                 ->get()
                 ->map(
-                    function ($data) {
-                        $ranting = $data["ratings"];
-                        if (count($ranting) === 0) {
+                    function ($data) { 
+                        if (count($data["ratings"]) === 0) {
                             return response()->json(['message' => 'Sorry this review does not belong to you or does not exist⚠️', 'ratings' => $ranting], 401);
                         }
-                        $arr = $ranting;
+                        $arr = $data["ratings"];
                         $count = 0;
                         $sum = 0;
                         $index = 0;
@@ -42,6 +41,7 @@ class SearchQueryController extends Controller
                         }
                         $star = $sum / $count;
                         $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star; 
+                       
                         $data['rate_star'] = floatval($rate);
                         return $data;
                     }
