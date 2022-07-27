@@ -37,7 +37,7 @@ class SearchQueryController extends Controller
                         $count += $item["rate"];
                         $sum += $item["rate"] * ($index += 1);
                     }
-                    if ($count !== 0) {
+                    if ($count != 0) {
                         $star = $sum / $count;
                         $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
                         $data['rate_star'] = floatval($rate);
