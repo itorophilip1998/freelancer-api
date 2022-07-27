@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Save;
 use App\Http\Requests\StoreSaveRequest;
 use App\Http\Requests\UpdateSaveRequest;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Validator;
 
 class SaveController extends Controller
@@ -56,9 +57,10 @@ class SaveController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }  
         $data=Save::where("user_id",$user_id)->with("user")->get();
+        return (Profile::where("user_id",$user_id)->get());
         return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍','saved'=>$data],200); 
       } catch (\Throwable $th) {
-        //   throw $th;
+          throw $th;
           return response()->json([
            'message' => 'This error is from the backend, please contact the backend developer'],500);
         

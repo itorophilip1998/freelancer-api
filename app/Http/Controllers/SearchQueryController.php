@@ -23,9 +23,8 @@ class SearchQueryController extends Controller
             // $date = $this->searchByDate(request()["date"]);
 
             $userBySkill = User::whereIn("id", $skills)
-                ->orWhereIn("id", $location)
-                // ->orWhereIn("date", $date)
-                ->with("profile", "skills")
+                ->where("id", $location) 
+                ->with("profile", "skills.specialEquipment")
                 ->get();
             return  response()->json([
                 "message"=>"Searched data loaded!",
@@ -39,7 +38,7 @@ class SearchQueryController extends Controller
     //search... by profile
     function searchByLocation($location)
     {
-        $profile = Profile::where("city", "$location")->get();
+        $profile = Profile::where("city", $location)->get();
         if (count($profile) <= 0)  return [];
         $profile_user_id = [];
         foreach ($profile as $item) {
