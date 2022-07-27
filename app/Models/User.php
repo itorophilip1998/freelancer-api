@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-      
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -30,11 +30,11 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'firstname',
         'lastname',
-        'email',  
+        'email',
         "password",
-        "phone", 
+        "phone",
         "address",
-        "role" ,
+        "role",
         "verify_token",
         "email_verified_at"
     ];
@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
 
 
 
-        /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -80,38 +80,45 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    } 
+    }
     public function cardDetails()
     {
         return $this->hasMany(CardDetails::class);
     }
     public function profile()
-    { 
-          return $this->hasOne(Profile::class); 
+    {
+        return $this->hasOne(Profile::class);
     }
-    public function ratings(){
+    public function ratings()
+    {
         return $this->hasMany(Ranting::class);
     }
-    public function skills(){
+    public function skills()
+    {
         return $this->hasMany(Skill::class);
     }
-    public function bankDetails(){
+    public function bankDetails()
+    {
         return $this->hasMany(BankDetails::class);
-    }  
+    }
     public function gallery()
-    { 
-          return $this->hasMany(ProfileImages::class); 
+    {
+        return $this->hasMany(ProfileImages::class);
     }
     public function profileImage()
-    { 
-          return $this->hasOne(Photo::class); 
+    {
+        return $this->hasOne(Photo::class);
     }
     public function savedUser()
-    { 
-          return $this->hasMany(Save::class); 
+    {
+        return $this->hasMany(Save::class, "user_id");
     }
     public function inbox()
-    { 
-          return $this->hasMany(Inbox::class); 
+    {
+        return $this->hasMany(Inbox::class);
     }
-}  
+    public function isSaved()
+    {
+        return $this->hasOne(Save::class, "saved_user_id");
+    }
+}
