@@ -98,7 +98,7 @@ class SaveController extends Controller
             // });
             // return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
