@@ -142,7 +142,8 @@ Route::group([
     'prefix' => 'save'
 ], function ($router) {
     Route::post('/add', [SaveController::class, 'add']);
-    Route::get('/get/{user_id}', [SaveController::class, 'get']);
+    Route::get('/get/{city}', [SaveController::class, 'get']);
+    Route::get('/get-city', [SaveController::class, 'getByCity']);
 });
 
 // indbox
@@ -169,6 +170,5 @@ Route::group([
     Route::post('/cancel/{booked_id}', [BookedController::class, 'cancel']);
     Route::get('/get', [BookedController::class, 'get']);
     Route::get('/booked-users', [BookedController::class, 'getBookedUsers']);
-
     Route::put('/completed/{booked_id}', [BookedController::class, 'completed']);
 });

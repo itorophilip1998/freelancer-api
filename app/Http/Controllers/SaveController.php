@@ -47,19 +47,27 @@ class SaveController extends Controller
         }
     }
 
-    public function get($user_id)
+    public function get($city)
     {
         try {
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-            $data = Save::where("user_id", $user_id)->with([
-                "user.profile",
-                "user.profileImage",
-                "user.isSaved",
-                "user.skills.specialEquipment",
-                "user.ratings"
-            ])->get();
+            $profile = Profile::where("city", $city)->get();
+            $user_id = [];
+            foreach ($profile as $item) {
+                $user_id[] = $item["user_id"];
+            }
+
+            $data = Save::where("user_id", auth()->user()->id)
+                ->whereIn("saved_user_id", $user_id)
+                ->with([
+                    "user.profile",
+                    "user.profileImage",
+                    "user.isSaved",
+                    "user.skills.specialEquipment",
+                    "user.ratings"
+                ])->get();
 
             $newFormat = $data->map(function ($data) {
                 $ranting = $data["user"]["ratings"];
@@ -81,6 +89,46 @@ class SaveController extends Controller
                 return $data;
             });
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
+        } catch (\Throwable $th) {
+            throw $th;
+            return response()->json([
+                'message' => 'This error is from the backend, please contact the backend developer'
+            ], 500);
+        }
+    }
+    public function getByCity()
+    {
+        try {
+            if (!auth()->check()) {
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }
+            $user_id = auth()->user()->id;
+            $data = Save::where("user_id", $user_id)->get();
+            $ids = [];
+            foreach ($data as $item) {
+                $ids[] = $item["saved_user_id"];
+            }
+            $users = Profile::whereIn("id", $ids)
+                ->with("user.gallery", "user.profileImage")
+                ->get();
+
+            $city = [];
+            foreach ($users as $item) {
+                $city[] =  $item["city"];
+            }
+            $allData = [];
+            foreach ($city as $item) {
+                $allData[] = [
+                    "city" => $item,
+                    "data" => Profile::where("city", $item)
+                        ->with("user.gallery", "user.profileImage")
+                        ->get()
+                ];
+            }
+
+
+
+            return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => $allData], 200);
         } catch (\Throwable $th) {
             throw $th;
             return response()->json([
