@@ -72,7 +72,8 @@ class SaveController extends Controller
                     "user.profileImage",
                     "user.isSaved",
                     "user.skills.specialEquipment",
-                    "user.ratings"
+                    "user.ratings",
+                    "user.gallery"
                 ])->get();
 
             $newFormat = $data->map(function ($data) {
