@@ -53,7 +53,13 @@ class SaveController extends Controller
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-            $profile = Profile::where("city", $city)->get();
+
+
+            $profile = ($city === "Others") ? Profile::where("city", Null)->get() :
+                Profile::where("city", $city)->get();
+
+
+
             $user_id = [];
             foreach ($profile as $item) {
                 $user_id[] = $item["user_id"];
@@ -119,7 +125,7 @@ class SaveController extends Controller
             $allData = [];
             foreach ($city as $item) {
                 $allData[] = [
-                    "city" => ($item!==null)? $item : "Others",
+                    "city" => ($item !== null) ? $item : "Others",
                     "data" => Profile::where("city", $item)
                         ->with("user.gallery", "user.profileImage")
                         ->get()
