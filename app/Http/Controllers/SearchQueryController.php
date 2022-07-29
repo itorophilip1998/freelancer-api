@@ -72,7 +72,7 @@ class SearchQueryController extends Controller
     // search by Skills
     function searchBySkills($skill)
     {
-        $skills = Skill::where("name", "LIKE", "%$skill%")
+        $skills = Skill::where("name", $skill)
             ->get();
         if (count($skills) <= 0)  return [];
         $skills_user_id = [];

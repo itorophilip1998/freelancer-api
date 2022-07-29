@@ -15,6 +15,7 @@ use App\Http\Controllers\RantingController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SearchQueryController;
 use App\Http\Controllers\ProfileImagesController;
 use App\Http\Controllers\SpecialEquipmentController;
@@ -172,3 +173,11 @@ Route::group([
     Route::get('/booked-users', [BookedController::class, 'getBookedUsers']);
     Route::put('/completed/{booked_id}', [BookedController::class, 'completed']);
 });
+
+// Make Payment
+Route::group([
+    'prefix' => 'payment'
+], function ($router) {
+    Route::post('/', [PaymentController::class, 'makePayment']); 
+});
+

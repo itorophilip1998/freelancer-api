@@ -26,7 +26,7 @@ class CreateFailedJobsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
+     *w
      * @return void
      */
     public function down()
