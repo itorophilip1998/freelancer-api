@@ -27,7 +27,6 @@ class SearchQueryController extends Controller
                 ->with("profile", "skills.specialEquipment", "isSaved", "profileImage", "ratings", "gallery")
                 ->get();
 
-
             $userBySkill->map(
                 function ($data) {
                     $count = 0;

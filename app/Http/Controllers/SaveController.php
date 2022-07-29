@@ -119,7 +119,7 @@ class SaveController extends Controller
             $allData = [];
             foreach ($city as $item) {
                 $allData[] = [
-                    "city" => $item,
+                    "city" => ($item!==null)? $item : "Others",
                     "data" => Profile::where("city", $item)
                         ->with("user.gallery", "user.profileImage")
                         ->get()
