@@ -55,7 +55,7 @@ class SaveController extends Controller
             }
 
 
-            $profile = ($city === "Others") ? Profile::where("city", Null)->get() :
+            $profile = ($city === "Others") ? Profile::where("city", NULL)->get() :
                 Profile::where("city", $city)->get();
 
 
