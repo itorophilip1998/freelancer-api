@@ -22,10 +22,32 @@ class SearchQueryController extends Controller
             $location = $this->searchByLocation(request()["location"]);
             // $date = $this->searchByDate(request()["date"]);
 
-            $userBySkill = User::whereIn("id", $skills)
-                ->orWhereIn("id", $location)
-                ->with("profile", "skills.specialEquipment", "isSaved", "profileImage", "ratings", "gallery")
-                ->get();
+            $userBySkill = null;
+
+            if (request()->location) {
+                $userBySkill = User::whereIn("id", $skills)
+                    ->where("id", $location)
+                    ->with(
+                        "profile",
+                        "skills.specialEquipment",
+                        "isSaved",
+                        "profileImage",
+                        "ratings",
+                        "gallery"
+                    )
+                    ->get();
+            } else if (!request()->location) {
+                $userBySkill = User::whereIn("id", $skills)
+                    ->with(
+                        "profile",
+                        "skills.specialEquipment",
+                        "isSaved",
+                        "profileImage",
+                        "ratings",
+                        "gallery"
+                    )
+                    ->get();
+            }
 
             $userBySkill->map(
                 function ($data) {
