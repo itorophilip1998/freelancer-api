@@ -72,7 +72,7 @@ class SaveController extends Controller
                     "user.profileImage",
                     "user.isSaved",
                     "user.skills.specialEquipment",
-                    "user.ratings",
+                    "user.ratings.user",
                     "user.gallery"
                 ])->get();
 
