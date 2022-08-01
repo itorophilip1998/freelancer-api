@@ -161,7 +161,7 @@ class AuthController extends Controller
           $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
             ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
-            ->get();
+            ->first();
           
            return response()->json([
            'message' => 'User successfully signedIn 👍',
