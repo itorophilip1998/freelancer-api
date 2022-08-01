@@ -125,22 +125,9 @@ class AuthController extends Controller
        }
         $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
-            ->with("profile","profileImage","gallery","ratings.user","","skills.specialEquipment","bankDetails","cardDetails")
-            ->first(); 
-        return response()->json(["user"=>$authUser]);
-     } catch (\Throwable $th) {
-         //throw $th;
-           return response()->json([
-           'message' => 'This error is from the backend, please contact the backend developer'],500);
-     }
-    }
-     
-    protected function createNewToken($token){ 
-       try {
-          $id=auth()->user(); 
-            $authUser=User::where("id", $id["id"]) 
-            ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->with("profile","profileImage","gallery","ratings.user","skills.specialEquipment","bankDetails","cardDetails")
             ->get();
+
             $authUser->map(
                 function ($data) {
                     $count = 0;
@@ -161,12 +148,27 @@ class AuthController extends Controller
                     return $data;
                 }
             );  
+        return response()->json(["user"=>$authUser]);
+     } catch (\Throwable $th) {
+        //  throw $th;
+           return response()->json([
+           'message' => 'This error is from the backend, please contact the backend developer'],500);
+     }
+    }
+     
+    protected function createNewToken($token){ 
+       try {
+          $id=auth()->user(); 
+            $authUser=User::where("id", $id["id"]) 
+            ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->get();
+          
            return response()->json([
            'message' => 'User successfully signedIn 👍',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
-            'user' =>(object) $authUser
+            'user' =>$authUser
         ]);
        } catch (\Throwable $th) {
         //    throw $th;

@@ -132,7 +132,8 @@ class SearchQueryController extends Controller
                 "isSaved",
                 "profileImage",
                 "ratings.user",
-                "gallery"
+                "gallery",
+                "ratings"
             )
             ->get();
 
@@ -160,7 +161,7 @@ class SearchQueryController extends Controller
         return  response()->json([
             "message" => "Searched data loaded!",
             "length" => count($userBySkill),
-            "data" => (object) $userBySkill
+            "data" =>$userBySkill
         ], 200);
     }
 }
