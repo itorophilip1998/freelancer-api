@@ -136,6 +136,7 @@ Route::group([
     'prefix' => 'search'
 ], function ($router) {
     Route::get('/', [SearchQueryController::class, 'query']);
+    Route::get('/{user_id}', [SearchQueryController::class, 'getUserById']);
 });
 
 // saved

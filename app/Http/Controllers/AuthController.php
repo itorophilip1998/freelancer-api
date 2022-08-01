@@ -125,7 +125,7 @@ class AuthController extends Controller
        }
         $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
-            ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
+            ->with("profile","profileImage","gallery","ratings.user","","skills.specialEquipment","bankDetails","cardDetails")
             ->first(); 
         return response()->json(["user"=>$authUser]);
      } catch (\Throwable $th) {
@@ -140,13 +140,33 @@ class AuthController extends Controller
           $id=auth()->user(); 
             $authUser=User::where("id", $id["id"]) 
             ->with("profile","profileImage","gallery","ratings","skills.specialEquipment","bankDetails","cardDetails")
-            ->first(); 
+            ->get();
+            $authUser->map(
+                function ($data) {
+                    $count = 0;
+                    $sum = 0;
+                    $index = 0;
+                    foreach ($data["ratings"] as $item) {
+                        $count += $item["rate"];
+                        $sum += $item["rate"] * ($index += 1);
+                    }
+                    if ($count != 0) {
+                        $star = $sum / $count;
+                        $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
+                        $data['rate_star'] = floatval($rate);
+                    } else {
+                        $data['rate_star'] = 0;
+                    }
+
+                    return $data;
+                }
+            );  
            return response()->json([
            'message' => 'User successfully signedIn 👍',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
-            'user' =>$authUser
+            'user' =>(object) $authUser
         ]);
        } catch (\Throwable $th) {
         //    throw $th;
