@@ -24,7 +24,7 @@ class SearchQueryController extends Controller
 
             $userBySkill = null;
 
-            if (request()->location!==null) {
+            if (request()->location !== null) {
                 $userBySkill = User::whereIn("id", $skills)
                     ->where("id", $location)
                     ->with(
@@ -71,7 +71,9 @@ class SearchQueryController extends Controller
             );
 
             return  response()->json([
-                "message" => "Searched data loaded!", "data" => $userBySkill
+                "message" => "Searched data loaded!",
+                "length" => count($userBySkill),
+                "data" => $userBySkill
             ], 200);
         } catch (\Throwable $th) {
             throw $th;
@@ -81,7 +83,7 @@ class SearchQueryController extends Controller
     //search... by profile
     function searchByLocation($location)
     {
-        
+
         $profile = Profile::where("location", "LIKE", "%$location%")
             // ->where("location", "LIKE", "%$secondLocation%")
             ->get();
