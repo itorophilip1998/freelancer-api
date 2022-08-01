@@ -179,6 +179,6 @@ Route::group([
 Route::group([
     'prefix' => 'payment'
 ], function ($router) {
-    Route::post('/', [PaymentController::class, 'makePayment']); 
+    Route::post('/pay', [PaymentController::class, 'makePayment']); 
 });
 

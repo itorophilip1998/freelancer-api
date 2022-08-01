@@ -17,8 +17,8 @@ class ProfileController extends Controller
             }
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'required|string',
-                'location' => 'required|string',
-                'bio' => 'required|string|max:200',
+                'location' => 'nullable|string',
+                'bio' => 'nullable|string|max:200',
                 "facebook_username" => 'nullable|string',
                 "instagram_username" => 'nullable|string',
                 "linkedin_username" => 'nullable|string',

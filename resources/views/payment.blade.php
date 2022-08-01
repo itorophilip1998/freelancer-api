@@ -6,25 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Payment</title>
     <link rel="stylesheet" href="https://static.unzer.com/v1/unzer.css" />
+    <script type="text/javascript" src="https://static.unzer.com/v1/unzer.js"></script>
 
 </head>
 <body>
     
 
-<form id="payment-form" class="unzerUI form" novalidate>
+<form id="payment-form" class="unzerUI form" novalidate onsubmit="loadForm()">
   <div class="field">
     <div id="card-element-id-number" class="unzerInput">
+      71836173571536
         <!-- Card number UI Element will be inserted here. -->
     </div>
   </div>
   <div class="two fields">
     <div class="field ten wide">
       <div id="card-element-id-expiry" class="unzerInput">
+        30/24
         <!-- Card expiry date UI Element will be inserted here. -->
       </div>
     </div>
     <div class="field six wide">
       <div id="card-element-id-cvc" class="unzerInput">
+902
         <!-- Card CVC UI Element will be inserted here. -->
       </div>
     </div>
@@ -36,10 +40,25 @@
   </div>
 </form>
 
-    <script type="text/javascript" src="https://static.unzer.com/v1/unzer.js"></script>
 <script>
+
+ // Handling the form submission
+let form = document.getElementById('payment-form');
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Creating a Card resource
+    card.createResource()
+        .then(function(result) {
+            // submit the result.id to your backend
+        })
+        .catch(function(error) {
+            $errorHolder.html(error.message);
+        })
+});
+
     // Creating a unzer instance with your public key
-let unzerInstance = new unzer('727e2abb4bcacc098c7140c866c2f1b47a9694e5cd5614e6116466147217b958');
+let unzerInstance = new unzer('28a774d707b85b079dd05505c4e3cb7d1276654810444541e2d4786f188b1756');
 
 // Creating a credit card instance
 let card = unzerInstance.Card()
@@ -58,6 +77,7 @@ card.create('cvc', {
 card.create('holder', {
   containerId: 'card-element-id-holder'
 });
+  }
 </script>
 </body>
 </html>
