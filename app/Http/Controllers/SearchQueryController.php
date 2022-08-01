@@ -84,8 +84,7 @@ class SearchQueryController extends Controller
     function searchByLocation($location)
     {
 
-        $profile = Profile::where("city", "LIKE", "%$location%")
-            // ->where("location", "LIKE", "%$secondLocation%")
+        $profile = Profile::where("city", "$location") 
             ->get();
         if (count($profile) <= 0)  return [];
         $profile_user_id = [];
