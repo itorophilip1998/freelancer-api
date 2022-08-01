@@ -160,7 +160,7 @@ class SearchQueryController extends Controller
         return  response()->json([
             "message" => "Searched data loaded!",
             "length" => count($userBySkill),
-            "data" =>$userBySkill
+            "data" =>$userBySkill[0]
         ], 200);
     }
 }
