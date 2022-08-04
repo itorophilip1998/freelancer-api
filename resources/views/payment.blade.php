@@ -48,14 +48,8 @@ form.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // Creating a Card resource
-    card.createResource()
-        .then(function(result) {
-            // submit the result.id to your backend
-        })
-        .catch(function(error) {
-            $errorHolder.html(error.message);
-        })
-});
+   
+
 
     // Creating a unzer instance with your public key
 let unzerInstance = new unzer('28a774d707b85b079dd05505c4e3cb7d1276654810444541e2d4786f188b1756');
@@ -76,6 +70,16 @@ card.create('cvc', {
 // Optional
 card.create('holder', {
   containerId: 'card-element-id-holder'
+});
+
+ card.createResource()
+        .then(function(result) {
+            // submit the result.id to your backend
+            console.log(result)
+        })
+        .catch(function(error) {
+            $errorHolder.html(error.message);
+        })
 });
   }
 </script>

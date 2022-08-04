@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Booked;
 use Illuminate\Support\Facades\Validator;
 
@@ -86,14 +87,27 @@ class BookedController extends Controller
 
             $isMe = Booked::where(["user_id" => auth()->user()->id])
                 ->where("booked_user_id", "!=", auth()->user()->id)
-                ->with("userbooked.profileImage", "userbooked.skills")
-                ->get();
+                ->with("userbooked.profileImage", "userbooked.skills", "userbooked.ratings")
+                ->get()->map(function ($data) {
+
+                    $reviews = $data["userbooked"]["ratings"];
+                    $isReviewed = null;
+                    foreach ($reviews as $item) {
+                        if ($data->status !== "completed" && $item->rater_id === auth()->user()->id) {
+                            $isReviewed = true;
+                        } else {
+                            $isReviewed = false;
+                        }
+                    }
+                    $data["isReviewed"] = $isReviewed;
+                    return $data;
+                });
             return response()->json([
                 'message' => ' successfully loaded booked user 👍',
                 'booked' => $isMe
             ], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
@@ -134,8 +148,8 @@ class BookedController extends Controller
             }
 
             $isMe = Booked::where(["booked_user_id" => auth()->user()->id])
-            ->where("booked_user_id", "!=", auth()->user()->id)
-            ->with("user.profileImage", "skill")
+                ->where("booked_user_id", "!=", auth()->user()->id)
+                ->with("user.profileImage", "skill")
                 ->get();
 
             return response()->json([

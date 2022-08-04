@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ranting;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StoreRantingRequest;
-use App\Http\Requests\UpdateRantingRequest;
-
+use Illuminate\Support\Facades\Validator; 
 class RantingController extends Controller
 {
        public function add()
@@ -33,7 +30,10 @@ class RantingController extends Controller
             $rater_exist=Ranting::where("user_id",request()->user_id)
             ->where("rater_id",request()->rater_id)->first();
             if($rater_exist){
-                $rater_exist->update(["rate"=>request()->rate,"reviews"=>request()->reviews]);
+                $rater_exist->update([
+                    "rate"=>request()->rate,
+                "reviews"=>request()->reviews
+            ]);
                return response()->json(['message' => 'Rating successfully updated 👍','ranting'=>$rater_exist],200); 
             }
             

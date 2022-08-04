@@ -8,6 +8,7 @@ use App\Models\Inbox;
 use App\Models\Photo;
 // use Laravel\Sanctum\HasApiTokens;
 use App\Models\Skill;
+use App\Models\Booked;
 use App\Models\Profile;
 use App\Models\Ranting;
 use App\Models\BankDetails;
@@ -116,6 +117,10 @@ class User extends Authenticatable implements JWTSubject
     public function inbox()
     {
         return $this->hasMany(Inbox::class);
+    }
+    public function booked()
+    {
+        return $this->hasMany(Booked::class);
     }
     public function isSaved()
     {
