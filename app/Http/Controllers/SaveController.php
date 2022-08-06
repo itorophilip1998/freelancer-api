@@ -133,7 +133,8 @@ class SaveController extends Controller
                         ->get()
                 ];
             }
-           return array_unique($allData, SORT_REGULAR);
+           $finalData= array_unique($allData, SORT_REGULAR);
+           return   array_map("unserialize", array_unique(array_map("serialize", $allData)));
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => array_unique($allData)], 200);
         } catch (\Throwable $th) {
             throw $th;
