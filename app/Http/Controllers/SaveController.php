@@ -132,11 +132,9 @@ class SaveController extends Controller
                         ->with("user.gallery", "user.profileImage")
                         ->get()
                 ];
-            } 
-
-
-
-            return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => array_unique($allData, SORT_REGULAR)], 200);
+            }
+           return array_unique($allData, SORT_REGULAR);
+            return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => array_unique($allData)], 200);
         } catch (\Throwable $th) {
             throw $th;
             return response()->json([
