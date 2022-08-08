@@ -124,7 +124,7 @@ class SaveController extends Controller
                 $city[] =  $item["city"];
             }
             $allData = [];
-            $city = array_unique($city); 
+            $city = $city ? array_unique($city) : $city;
             foreach ($city as $item) {
                 $allData[] = [
                     "city" => ($item !== NULL) ? $item : "Others",
@@ -133,7 +133,7 @@ class SaveController extends Controller
                         ->with("user.gallery", "user.profileImage")
                         ->get()
                 ];
-            }  
+            }
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => $allData], 200);
         } catch (\Throwable $th) {
             throw $th;
