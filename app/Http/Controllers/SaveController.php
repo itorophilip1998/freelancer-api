@@ -93,20 +93,20 @@ class SaveController extends Controller
                     $data['rate_star'] = 0;
                 }
 
-                if ($data["user"]["profile"]["city"] === null)
-                 return $data;
-                 else
-                 return $data;
+                if ($data["user"]["profile"]["city"] === NULL)
+                    return "data";
+                else
+                    return "data";
             });
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
         }
     }
-    
+
     public function getByCity()
     {
         try {
@@ -119,6 +119,7 @@ class SaveController extends Controller
             foreach ($data as $item) {
                 $ids[] = $item["saved_user_id"];
             }
+
             $users = Profile::whereIn("id", $ids)
                 ->with("user.gallery", "user.profileImage")
                 ->get();
@@ -140,7 +141,7 @@ class SaveController extends Controller
             }
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer`s categories 👍', 'saved' => $allData], 200);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
