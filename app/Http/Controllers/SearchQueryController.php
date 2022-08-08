@@ -26,7 +26,7 @@ class SearchQueryController extends Controller
             if (request()->location !== null) {
                 // return ("true");
                 $userBySkill = User::whereIn("id", $skills)
-                    ->where("id", $location)
+                    ->whereIn("id", $location)
                     ->with(
                         "profile",
                         "skills.specialEquipment",
