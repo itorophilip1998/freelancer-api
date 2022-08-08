@@ -55,17 +55,19 @@ class SaveController extends Controller
             }
 
 
-            // $profile = ($city === "Others") ? Profile::where("city", NULL)->get() :
-            //     Profile::where("city", $city)->get();
+            $profile = ($city === "Others") ? Profile::where("city", NULL)->get() :
+                Profile::where("city", $city)->get();
 
 
             // return $profile;
-            // $user_id = [];
-            // foreach ($profile as $item) {
-            //     $user_id[] = $item["user_id"];
-            // }
+            $saved_user_id = [];
+            foreach ($profile as $item) {
+                $saved_user_id[] = $item["user_id"];
+            }
+            // return $saved_user_id;
 
             $data = Save::where("user_id", auth()->user()->id)
+                ->whereIn("saved_user_id", $saved_user_id)
                 ->with([
                     "user.profile",
                     "user.profileImage",
@@ -74,8 +76,8 @@ class SaveController extends Controller
                     "user.ratings.user",
                     "user.gallery"
                 ])->get();
-
-            $newFormat = $data->filter(function ($data) {
+// return $data;
+            $newFormat = $data->map(function ($data) {
                 $ranting = $data["user"]["ratings"];
                 $arr = $ranting;
                 $count = 0;
@@ -93,10 +95,8 @@ class SaveController extends Controller
                     $data['rate_star'] = 0;
                 }
 
-                if ($data?->user?->profile?->city === NULL)
-                    return $data;
-                else
-                    return $data;
+                return $data;
+              
             });
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
         } catch (\Throwable $th) {
