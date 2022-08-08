@@ -120,7 +120,7 @@ class SaveController extends Controller
                 $ids[] = $item["saved_user_id"];
             }
 
-            $users = Profile::whereIn("id", $ids)
+            $users = Profile::whereIn("user_id", $ids)
                 ->with("user.gallery", "user.profileImage")
                 ->get();
 
