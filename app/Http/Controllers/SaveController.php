@@ -93,10 +93,10 @@ class SaveController extends Controller
                     $data['rate_star'] = 0;
                 }
 
-                if ($data["user"]["profile"]["city"] === NULL)
-                    return "data";
+                if ($data?->user?->profile?->city === NULL)
+                    return $data;
                 else
-                    return "data";
+                    return $data;
             });
             return response()->json(['message' => 'Successfully Loaded  Saved freelancer👍', 'saved' => $newFormat], 200);
         } catch (\Throwable $th) {
