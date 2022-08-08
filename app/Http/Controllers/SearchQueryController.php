@@ -22,11 +22,11 @@ class SearchQueryController extends Controller
             $location = $this->searchByLocation(request()["location"]);
             // $date = $this->searchByDate(request()["date"]);
 
-            $userBySkill = null; 
+            $userBySkill = null;
             if (request()->location !== null) {
-               
+                // return ("true");
                 $userBySkill = User::whereIn("id", $skills)
-                    ->Orwhere("id", $location)
+                    ->where("id", $location)
                     ->with(
                         "profile",
                         "skills.specialEquipment",
@@ -35,8 +35,10 @@ class SearchQueryController extends Controller
                         "ratings.user",
                         "gallery"
                     )
-                    ->get(); 
+                    ->get();
             } else {
+                // return ("false");
+
                 $userBySkill = User::whereIn("id", $skills)
                     ->with(
                         "profile",
@@ -84,13 +86,13 @@ class SearchQueryController extends Controller
     function searchByLocation($location)
     {
 
-        $profile = Profile::where("city", "$location") 
+        $profile = Profile::where("city", "$location")
             ->get();
         if (count($profile) <= 0)  return [];
         $profile_user_id = [];
         foreach ($profile as $item) {
             $profile_user_id[] = $item["user_id"];
-        } 
+        }
         return $profile_user_id;
     }
 
@@ -160,7 +162,7 @@ class SearchQueryController extends Controller
         return  response()->json([
             "message" => "Searched data loaded!",
             "length" => count($userBySkill),
-            "data" =>$userBySkill[0]
+            "data" => $userBySkill[0]
         ], 200);
     }
 }
