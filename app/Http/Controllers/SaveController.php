@@ -106,6 +106,7 @@ class SaveController extends Controller
             ], 500);
         }
     }
+    
     public function getByCity()
     {
         try {
