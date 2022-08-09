@@ -148,7 +148,7 @@ class BookedController extends Controller
             }
 
             $isMe = Booked::where(["booked_user_id" => auth()->user()->id])
-                ->where("booked_user_id", "!=", auth()->user()->id)
+                ->where("user_id", "!=", auth()->user()->id)
                 ->with("user.profileImage", "skill")
                 ->get();
 
