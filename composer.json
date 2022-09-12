@@ -15,6 +15,7 @@
         "intervention/image": "^2.7",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "paypal/rest-api-sdk-php": "^1.14",
         "srmklive/paypal": "~3.0",
         "tymon/jwt-auth": "^1.0"
