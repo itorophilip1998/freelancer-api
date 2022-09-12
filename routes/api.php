@@ -10,12 +10,13 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\BookedController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\FriendsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RantingController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SearchQueryController;
 use App\Http\Controllers\ProfileImagesController;
 use App\Http\Controllers\SpecialEquipmentController;
@@ -189,5 +190,5 @@ Route::group([
 Route::group([
     'prefix' => 'services'
 ], function ($router) {
-    Route::ghet('/skills', [PaymentController::class, 'makePayment']);
+    Route::get('/skills', [ServicesController::class, 'serviceBySkills']);
 });
