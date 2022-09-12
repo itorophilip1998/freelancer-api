@@ -104,6 +104,7 @@ Route::group([
     Route::post('/update/{id}', [SpecialEquipmentController::class, 'update']);
     Route::get('/get/{skill_id}', [SpecialEquipmentController::class, 'get']);
     Route::get('/by-userid/{user_id}', [SpecialEquipmentController::class, 'getUserId']);
+    Route::delete('/delete/{equipment_id}', [SpecialEquipmentController::class, 'deleteEquipment']);
 });
 
 //  Rating Details 
@@ -181,6 +182,12 @@ Route::group([
 Route::group([
     'prefix' => 'payment'
 ], function ($router) {
-    Route::post('/pay', [PaymentController::class, 'makePayment']); 
+    Route::post('/pay', [PaymentController::class, 'makePayment']);
 });
 
+// Services
+Route::group([
+    'prefix' => 'services'
+], function ($router) {
+    Route::ghet('/skills', [PaymentController::class, 'makePayment']);
+});

@@ -104,4 +104,20 @@ class SpecialEquipmentController extends Controller
         
       }
  }
+
+    public function deleteEquipment($equipment_id)
+    {
+        try {
+            if (!auth()->check()) {
+                return response()->json(['message' => 'Unauthorized ⚠️'], 401);
+            }
+            $user_id = auth()->user()->id;
+            $SpecialEquipment = SpecialEquipment::where(["user_id" => $user_id, "id" => $equipment_id])->delete();
+            return response()->json(['message' => 'Special Equipment successfully Deleted 👍', 'SpecialEquipment' => $SpecialEquipment], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'This error is from the backend, please contact the backend developer'
+            ], 500);
+        }
+    }
 }

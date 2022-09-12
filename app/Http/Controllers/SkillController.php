@@ -110,12 +110,10 @@ class SkillController extends Controller
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-            $user_id = auth()->user()->id;
-
+            $user_id = auth()->user()->id; 
             $skill = Skill::where(["user_id" => $user_id, "id" => $skill_id])->delete();
             return response()->json(['message' => 'Skill successfully Deleted 👍', 'skill' => $skill], 200);
-        } catch (\Throwable $th) {
-            //   throw $th;
+        } catch (\Throwable $th) { 
             return response()->json([
                 'message' => 'This error is from the backend, please contact the backend developer'
             ], 500);
