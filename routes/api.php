@@ -92,6 +92,8 @@ Route::group([
     Route::post('/add', [SkillController::class, 'add']);
     Route::post('/update/{id}', [SkillController::class, 'update']);
     Route::get('/get/{user_id}', [SkillController::class, 'get']);
+    Route::put('/update', [SkillController::class, 'updateAll']);
+    Route::delete('/delete/{skill_id}', [SkillController::class, 'deleteSkill']);
 });
 
 //  Special Equipment Details 
