@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Profile;
+use App\Models\SpecialEquipment;
 use Illuminate\Http\Request;
 
 class SearchQueryController extends Controller
@@ -13,43 +14,37 @@ class SearchQueryController extends Controller
     {
         try {
 
-            if (!request()["skill"]) {
-
-                return response()->json(["message" => "please add a skill!"], 404);
-            }
 
             $skills = $this->searchBySkills(request()["skill"]);
             $location = $this->searchByLocation(request()["location"]);
+            $equipment = $this->searchByEquipment(request()["equipment"]);
             // $date = $this->searchByDate(request()["date"]);
 
+            $skill = request()->skill;
+            $equipment = request()->equipment;
+            $location = request()->location;
             $userBySkill = null;
-            if (request()->location !== null) {
-                // return ("true");
-                $userBySkill = User::whereIn("id", $skills)
-                    ->whereIn("id", $location)
-                    ->with(
-                        "profile",
-                        "skills.specialEquipment",
-                        "isSaved",
-                        "profileImage",
-                        "ratings.user",
-                        "gallery"
-                    )
-                    ->get();
-            } else {
-                // return ("false");
-
-                $userBySkill = User::whereIn("id", $skills)
-                    ->with(
-                        "profile",
-                        "skills.specialEquipment",
-                        "isSaved",
-                        "profileImage",
-                        "ratings.user",
-                        "gallery"
-                    )
-                    ->get();
+            // return everything is 
+            if ((!$skill || $equipment) && !$location) {
+                $userBySkill = User::with(
+                    "profile",
+                    "skills.specialEquipment",
+                    "isSaved",
+                    "profileImage",
+                    "ratings.user",
+                    "gallery"
+                )->get();
             }
+            // if $
+            // else if(){
+
+            // }
+            // } else if ( ) {
+            //     // $userBySkill = User::whereIn("id", $equipment);
+            // } else { 
+
+            // }
+            return $userBySkill;
 
             $userBySkill->map(
                 function ($data) {
@@ -78,7 +73,7 @@ class SearchQueryController extends Controller
                 "data" => $userBySkill
             ], 200);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
     }
 
@@ -100,6 +95,18 @@ class SearchQueryController extends Controller
     function searchBySkills($skill)
     {
         $skills = Skill::where("name", $skill)
+            ->get();
+        if (count($skills) <= 0)  return [];
+        $skills_user_id = [];
+        foreach ($skills as $item) {
+            $skills_user_id[] = $item["user_id"];
+        }
+        return $skills_user_id;
+    }
+    // search by equipment
+    function searchByEquipment($equipment)
+    {
+        $skills = SpecialEquipment::where("name", $equipment)
             ->get();
         if (count($skills) <= 0)  return [];
         $skills_user_id = [];
