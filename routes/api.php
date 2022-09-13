@@ -191,4 +191,5 @@ Route::group([
     'prefix' => 'services'
 ], function ($router) {
     Route::get('/skills', [ServicesController::class, 'serviceBySkills']);
+    Route::get('/equipment', [ServicesController::class, 'serviceByEquipment']);
 });
