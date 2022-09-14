@@ -13,69 +13,84 @@ class SearchQueryController extends Controller
     public function query()
     {
         try {
-
+            $list = [
+                "profile",
+                "skills.specialEquipment",
+                "isSaved",
+                "profileImage",
+                "ratings.user",
+                "gallery"
+            ];
 
             $skills = $this->searchBySkills(request()["skill"]);
-            $location = $this->searchByLocation(request()["location"]);
-            $equipment = $this->searchByEquipment(request()["equipment"]);
+            $locations = $this->searchByLocation(request()["location"]);
+            $equipments = $this->searchByEquipment(request()["equipment"]);
             // $date = $this->searchByDate(request()["date"]);
 
             $skill = request()->skill;
             $equipment = request()->equipment;
             $location = request()->location;
-            $userBySkill = null;
-            // return everything is 
-            if ((!$skill || $equipment) && !$location) {
-                $userBySkill = User::with(
-                    "profile",
-                    "skills.specialEquipment",
-                    "isSaved",
-                    "profileImage",
-                    "ratings.user",
-                    "gallery"
-                )->get();
+            $user = null;
+
+            // return everything if skill and eequipment is NULL
+            if (!$skill && !$equipment) {
+                $user = User::with($list)->get();
+                return $this->getAll($user);
             }
-            // if $
-            // else if(){
 
-            // }
-            // } else if ( ) {
-            //     // $userBySkill = User::whereIn("id", $equipment);
-            // } else { 
-
-            // }
-            return $userBySkill;
-
-            $userBySkill->map(
-                function ($data) {
-                    $count = 0;
-                    $sum = 0;
-                    $index = 0;
-                    foreach ($data["ratings"] as $item) {
-                        $count += $item["rate"];
-                        $sum += $item["rate"] * ($index += 1);
-                    }
-                    if ($count != 0) {
-                        $star = $sum / $count;
-                        $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
-                        $data['rate_star'] = floatval($rate);
-                    } else {
-                        $data['rate_star'] = 0;
-                    }
-
-                    return $data;
+            // check if there is skills
+            else if ($skill) {
+                $user = User::whereIn("id", $skills);
+                if ($location) {
+                    return  $user->whereIn("id", $locations)->with($list)->get();
                 }
-            );
+                return $user->with($list)->get();
+            }
 
-            return  response()->json([
-                "message" => "Searched data loaded!",
-                "length" => count($userBySkill),
-                "data" => $userBySkill
-            ], 200);
+            // check if there is equipment 
+            else if ($equipment) {
+                $user = User::whereIn("id", $equipments);
+                if ($location) {
+                    return  $user->whereIn("id", $locations)->with($list)->get();
+                }
+                return $user->with($list)->get();
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
     }
+
+
+    public function getAll($user)
+    {
+        $user->map(
+            function ($data) {
+                $count = 0;
+                $sum = 0;
+                $index = 0;
+                foreach ($data["ratings"] as $item) {
+                    $count += $item["rate"];
+                    $sum += $item["rate"] * ($index += 1);
+                }
+                if ($count != 0) {
+                    $star = $sum / $count;
+                    $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
+                    $data['rate_star'] = floatval($rate);
+                } else {
+                    $data['rate_star'] = 0;
+                }
+
+                return $data;
+            }
+        );
+
+        return  response()->json([
+            "message" => "Searched data loaded!",
+            "length" => count($user),
+            "data" => $user
+        ], 200);
+    }
+
 
     //search... by profile
     function searchByLocation($location)
@@ -133,7 +148,7 @@ class SearchQueryController extends Controller
     public function getUserById($user_id)
     {
 
-        $userBySkill = User::where("id", $user_id)
+        $user = User::where("id", $user_id)
             ->with(
                 "profile",
                 "skills.specialEquipment",
@@ -145,7 +160,7 @@ class SearchQueryController extends Controller
             )
             ->get();
 
-        $userBySkill->map(
+        $user->map(
             function ($data) {
                 $count = 0;
                 $sum = 0;
@@ -168,8 +183,8 @@ class SearchQueryController extends Controller
 
         return  response()->json([
             "message" => "Searched data loaded!",
-            "length" => count($userBySkill),
-            "data" => $userBySkill[0]
+            "length" => count($user),
+            "data" => $user[0]
         ], 200);
     }
 }
