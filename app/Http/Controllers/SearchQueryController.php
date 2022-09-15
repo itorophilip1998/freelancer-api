@@ -42,18 +42,22 @@ class SearchQueryController extends Controller
             else if ($skill) {
                 $user = User::whereIn("id", $skills);
                 if ($location) {
-                    return  $user->whereIn("id", $locations)->with($list)->get();
+                    $newUser = $user->whereIn("id", $locations)->with($list)->get();
+                    return $this->getAll($newUser);
                 }
-                return $user->with($list)->get();
+                $newUser =   $user->with($list)->get();
+                return $this->getAll($newUser);
             }
 
             // check if there is equipment 
             else if ($equipment) {
                 $user = User::whereIn("id", $equipments);
                 if ($location) {
-                    return  $user->whereIn("id", $locations)->with($list)->get();
+                    $newUser = $user->whereIn("id", $locations)->with($list)->get();
+                    return $this->getAll($newUser);
                 }
-                return $user->with($list)->get();
+                $newUser =  $user->with($list)->get();
+                return $this->getAll($newUser);
             }
         } catch (\Throwable $th) {
             throw $th;
