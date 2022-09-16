@@ -13,3 +13,6 @@ class ReportProblem extends Model
         "user_id"
     ];
 }
+
+
+// we are looking for users that have a payment that is expired but have set the broker_registration to complete
