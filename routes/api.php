@@ -19,6 +19,7 @@ use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\CardDetailsController;
 use App\Http\Controllers\SearchQueryController;
 use App\Http\Controllers\ProfileImagesController;
+use App\Http\Controllers\ReportProblemController;
 use App\Http\Controllers\SpecialEquipmentController;
 
 //  Auth route
@@ -192,4 +193,11 @@ Route::group([
 ], function ($router) {
     Route::get('/skills', [ServicesController::class, 'serviceBySkills']);
     Route::get('/equipment', [ServicesController::class, 'serviceByEquipment']);
+});
+
+// Report
+Route::group([
+    'prefix' => 'report'
+], function ($router) {
+    Route::post('/', [ReportProblemController::class, 'reportPost']); 
 });

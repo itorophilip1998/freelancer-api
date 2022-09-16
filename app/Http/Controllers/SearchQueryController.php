@@ -180,7 +180,7 @@ class SearchQueryController extends Controller
                 } else {
                     $data['rate_star'] = 0;
                 }
-
+                
                 return $data;
             }
         );
