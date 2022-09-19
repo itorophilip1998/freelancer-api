@@ -13,8 +13,11 @@ class SkillFactory extends Factory
      */
     public function definition()
     {
+
         return [
-            //
+            'user_id' => rand(1,100), 
+            'name'   => $this->faker->jobTitle,
+            'rate' => rand(10,1000), 
         ];
     }
 }

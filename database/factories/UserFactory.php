@@ -22,18 +22,20 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        // admin
-        return [ 
-            'name' => "Admin",
-            'email' => "admin@gmail.com",
+
+        return [
+            'firstname' => $this->faker->firstName,
+            "lastname" =>       $this->faker->lastName,
+            'email'   => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'phone' => "09024195493",
-            'role'=>"admin",
-            'password' =>bcrypt("admin@2022"),  
-            'remember_token' => Str::random(10) 
+            'phone' => $this->faker->phoneNumber,
+            'role' => "user",
+            'password'    => bcrypt("Password123"), // secret
+            'remember_token'    => Str::random(10),
         ];
     }
-
-    //seller email:websoftLTD@gmail.com  password:password123
-    //buyer email: buyer@gmail.com ,password:password123
+ 
 }
+
+
+ 
