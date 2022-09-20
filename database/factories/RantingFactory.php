@@ -15,8 +15,8 @@ class RantingFactory extends Factory
     {
         return [
             "rate"=>rand(1,5),
-            "user_id"=>rand(1,50),
-            "rater_id"=>rand(51,100),
+            "rater_id"=>rand(1,50),
+            "user_id"=>rand(51,100),
             "reviews"=>$this->faker->title,
         ];
     }
