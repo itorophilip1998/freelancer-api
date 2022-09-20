@@ -13,8 +13,9 @@ class ProfileFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
+        return [ 
+        'user_id'=>rand(1,100),
+        "photo" => $this->faker->image('public/storage/images', 640, 480, null, false)
         ];
     }
 }
