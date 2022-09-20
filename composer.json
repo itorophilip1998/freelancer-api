@@ -8,7 +8,8 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
+        "fakerphp/faker": "^1.20",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -19,9 +20,7 @@
         "paypal/rest-api-sdk-php": "^1.14",
         "srmklive/paypal": "~3.0",
         "tymon/jwt-auth": "^1.0",
-        "unzerdev/php-sdk": "^1.2",
-        "fzaninotto/faker": "^1.9.1"
-
+        "unzerdev/php-sdk": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
