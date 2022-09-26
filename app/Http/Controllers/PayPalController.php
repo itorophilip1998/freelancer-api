@@ -15,7 +15,12 @@ class PayPalController extends Controller
      */
     public function createTransaction()
     {
-        return view('transaction');
+        $data = [
+            'booked_user_id' => request()->booked_user_id,
+            'user_id' => request()->user_id,
+            'amount' => request()->amount
+        ];
+        return view('transaction', compact('data', $data));
     }
 
     /**
@@ -25,6 +30,12 @@ class PayPalController extends Controller
      */
     public function processTransaction(Request $request)
     {
+        // $data = [
+        //     'booked_user_id' => request()->booked_user_id,
+        //     'user_id' => request()->user_id,
+        //     'amount' => request()->amount
+        // ];
+        dd($request->all());
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
@@ -39,7 +50,7 @@ class PayPalController extends Controller
                 0 => [
                     "amount" => [
                         "currency_code" => "USD",
-                        "value" => "1000.00"
+                        "value" => request()->amount
                     ]
                 ]
             ]
@@ -57,7 +68,6 @@ class PayPalController extends Controller
             return redirect()
                 ->route('createTransaction')
                 ->with('error', 'Something went wrong.');
-
         } else {
             return redirect()
                 ->route('createTransaction')
