@@ -35,7 +35,7 @@ class PayPalController extends Controller
         //     'user_id' => request()->user_id,
         //     'amount' => request()->amount
         // ];
-        dd($request->all());
+        // dd($request->all());
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();

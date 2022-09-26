@@ -8,6 +8,7 @@ use App\Http\Controllers\InboxController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\BookedController;
+use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\PaymentController;
@@ -184,7 +185,10 @@ Route::group([
 Route::group([
     'prefix' => 'payment'
 ], function ($router) {
-    Route::post('/pay', [PaymentController::class, 'makePayment']);
+    Route::get('create-transaction', [PayPalController::class, 'createTransaction'])->name('createTransaction');
+    Route::get('process-transaction', [PayPalController::class, 'processTransaction'])->name('processTransaction');
+    Route::get('success-transaction', [PayPalController::class, 'successTransaction'])->name('successTransaction');
+    Route::get('cancel-transaction', [PayPalController::class, 'cancelTransaction'])->name('cancelTransaction');
 });
 
 // Services
@@ -199,5 +203,5 @@ Route::group([
 Route::group([
     'prefix' => 'report'
 ], function ($router) {
-    Route::post('/', [ReportProblemController::class, 'reportPost']); 
+    Route::post('/', [ReportProblemController::class, 'reportPost']);
 });
