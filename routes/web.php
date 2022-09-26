@@ -23,6 +23,4 @@ Route::get('create-transaction', [PayPalController::class, 'createTransaction'])
 Route::get('process-transaction', [PayPalController::class, 'processTransaction'])->name('processTransaction');
 Route::get('success-transaction', [PayPalController::class, 'successTransaction'])->name('successTransaction');
 Route::get('cancel-transaction', [PayPalController::class, 'cancelTransaction'])->name('cancelTransaction');
-Route::get('show-payment', function () {
-    return view("payment");
-});
+ 
