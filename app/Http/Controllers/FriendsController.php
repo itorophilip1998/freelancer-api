@@ -62,7 +62,7 @@ class FriendsController extends Controller
       $Inbox = Friends::where('user_id', $user_id)
         ->orWhere('friend_id', $user_id)
         ->latest()
-        ->with('users_friend.profile', 'users_friend.profileImage')->get()
+        ->with('users_friend.profile', "users_friend.skills.specialEquipment", 'users_friend.profileImage')->get()
         ->map(function ($data) {
           $inbox = Booked::where("user_id", $data->user_id)
             ->where("booked_user_id", $data->friend_id)

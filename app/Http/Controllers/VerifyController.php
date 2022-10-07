@@ -48,7 +48,7 @@ class VerifyController extends Controller
         }
         $user=User::where('email',$request->email)->first();
        if($user->email_verified_at){
-        return response()->json(['error' => 'This user does is already verified ⚠️'], 401);  
+        return response()->json(['error' => 'This user has already been verified ⚠️'], 401);  
 
        }
         if(!$user){

@@ -90,7 +90,9 @@ class SaveController extends Controller
                 if ($count != 0) {
                     $star = $sum / $count;
                     $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
-                    $data['rate_star'] = floatval($rate);
+                    $newrate    = floatval($rate) > 5 ? 5 : $rate;
+
+                    $data['rate_star'] = $newrate;
                 } else {
                     $data['rate_star'] = 0;
                 }

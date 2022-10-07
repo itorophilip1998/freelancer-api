@@ -23,9 +23,7 @@ class CreateProfilesTable extends Migration
             $table->string("instagram_username")->nullable();  
             $table->string("linkedin_username")->nullable();    
             $table->string("twitter_username")->nullable();    
-            $table->timestamps();
-
-            
+            $table->timestamps(); 
             // foreign 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

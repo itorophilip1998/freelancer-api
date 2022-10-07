@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
@@ -15,12 +16,8 @@ class PayPalController extends Controller
      */
     public function createTransaction()
     {
-        $data = [
-            'booked_user_id' => request()->booked_user_id,
-            'user_id' => request()->user_id,
-            'amount' => request()->amount
-        ];
-        return view('transaction', compact('data', $data));
+
+        return view('transaction');
     }
 
     /**
@@ -28,36 +25,35 @@ class PayPalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function processTransaction(Request $request)
+    public function processTransaction(Request $res)
     {
-        // $data = [
-        //     'booked_user_id' => request()->booked_user_id,
-        //     'user_id' => request()->user_id,
-        //     'amount' => request()->amount
-        // ];
-        // dd($request->all());
+
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-
+        $provider->getAccessToken();
+        $linkRoute = [
+            'booked_user_id' => $res->booked_user_id,
+            'user_id' => $res->user_id,
+            'amount' => $res->amount
+        ];
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
-                "return_url" => route('successTransaction'),
+                "return_url" => route('successTransaction', $linkRoute),
                 "cancel_url" => route('cancelTransaction'),
+
             ],
             "purchase_units" => [
                 0 => [
                     "amount" => [
                         "currency_code" => "USD",
-                        "value" => request()->amount
+                        "value" => request()->amount,
                     ]
                 ]
             ]
         ]);
 
         if (isset($response['id']) && $response['id'] != null) {
-
             // redirect to approve href
             foreach ($response['links'] as $links) {
                 if ($links['rel'] == 'approve') {
@@ -88,6 +84,15 @@ class PayPalController extends Controller
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            Payment::create([
+                'amount' => $request['amount'],
+                'status' => 'completed',
+                'booked_user_id' => $request['booked_user_id'],
+                'user_id' => $request['user_id'],
+                'payment_id' => $response['id'],
+            ]);
+
             return redirect()
                 ->route('createTransaction')
                 ->with('success', 'Transaction complete.');

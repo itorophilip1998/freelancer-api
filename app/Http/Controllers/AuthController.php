@@ -78,8 +78,8 @@ class AuthController extends Controller
             try {
                 Mail::to(request()->email)->send(new SendMail($mail_data));
             } catch (\Throwable $th) {
-                //    throw $th; 
-                return response()->json(['message' => 'Mail was not sent!  check email address and try again ⚠️'], 401);
+                   throw $th; 
+                // return response()->json(['message' => 'Mail was not sent!  check email address and try again ⚠️'], 401);
             }
             return response()->json([
                 'message' => "User successfully registered 👍,  please verify your account 👉 <$request->email>",
@@ -148,7 +148,8 @@ class AuthController extends Controller
                     if ($count != 0) {
                         $star = $sum / $count;
                         $rate = strlen($star) > 3 ? substr($star, 0, 3)  : $star;
-                        $data['rate_star'] = floatval($rate);
+                        $newrate    = floatval($rate) > 5 ? 5 : $rate;
+                        $data['rate_star'] = $newrate;
                     } else {
                         $data['rate_star'] = 0;
                     }
