@@ -14,10 +14,10 @@ class AddAmountToBookedsTable extends Migration
     public function up()
     {
         Schema::table('bookeds', function (Blueprint $table) {
-            $table->integer("total_amount");
+            $table->unsignedBigInteger("total_amount")->default(0);
         });
     }
-
+    
 
     /**
      * Reverse the migrations.
