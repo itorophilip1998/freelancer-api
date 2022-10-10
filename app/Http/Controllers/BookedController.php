@@ -24,7 +24,8 @@ class BookedController extends Controller
                 'booked_time_start' => 'required|string',
                 'booked_time_end' => 'required|string',
                 'booked_user_id' => 'required|integer',
-                'status' => 'required|in:completed,pending,upcoming,cancel'
+                'status' => 'required|in:completed,pending,upcoming,cancel',
+                'total_amount' => 'required|integer'
             ]);
 
             if ($validator->fails()) {

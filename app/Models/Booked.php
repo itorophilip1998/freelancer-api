@@ -21,6 +21,7 @@ class Booked extends Model
         "booked_time_end",
         "status",
         "booked_user_id",
+        "total_amount"
     ];
     protected $casts = [
         'booked_date_start' => 'date',
