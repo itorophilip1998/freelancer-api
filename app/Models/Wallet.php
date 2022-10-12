@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Wallet extends Model
 {
@@ -12,5 +13,12 @@ class Wallet extends Model
         "user_id", 
         "total_balance",
         "balance", 
+        "bank_name", 
+        "account_number", 
+        "holders_name"
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

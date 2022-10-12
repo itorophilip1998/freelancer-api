@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Booked;
+use App\Models\Wallet;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BookedController extends Controller
@@ -47,10 +49,10 @@ class BookedController extends Controller
             ));
             return response()->json(['message' => ' successfully Booked a user 👍', 'booked' => $data], 200);
         } catch (\Throwable $th) {
-            throw $th;
-            // return response()->json([
-            //     'message' => 'This error is from the backend, please contact the backend developer'
-            // ], 500);
+            // throw $th;
+            return response()->json([
+                'message' => 'This error is from the backend, please contact the backend developer'
+            ], 500);
         }
     }
     public function cancel($booked_id)
@@ -120,8 +122,6 @@ class BookedController extends Controller
             if (!auth()->check()) {
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
-
-
             $isMe = Booked::where(["id" => $booked_id, "user_id" => auth()->user()->id])->first();
 
             if (!$isMe) {
@@ -131,6 +131,21 @@ class BookedController extends Controller
             $isMe->update(
                 ["status" => "completed"]
             );
+            $wallet = Wallet::where(['user_id' => $isMe->booked_user_id])->first();
+
+            if (!$wallet) {
+                Wallet::where(['user_id' => $isMe->booked_user_id])->create([
+                    "user_id" => $isMe->booked_user_id,
+                    "total_balance" => $isMe->total_amount,
+                    "balance" =>   $isMe->total_amount,
+                ]);
+            } else {
+                $wallet->update([
+                    "total_balance" =>  $wallet->total_balance + $isMe->total_amount,
+                    "balance" => $wallet->balance + $isMe->total_amount,
+                ]);
+            }
+
             return response()->json(['message' => ' successfully Completed a booked user 👍', 'booked' => $isMe], 200);
         } catch (\Throwable $th) {
             // throw $th;

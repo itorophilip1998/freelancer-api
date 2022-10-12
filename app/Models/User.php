@@ -122,6 +122,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Booked::class);
     }
+    public function wallet()
+    {
+        return $this->hasMany(Wallet::class);
+    }
+    public function withdrawal()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
     public function isSaved()
     {
         return $this->hasOne(Save::class, "saved_user_id");

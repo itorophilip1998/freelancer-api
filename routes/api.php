@@ -10,6 +10,7 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\BookedController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\VerifyController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\FriendsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -204,4 +205,13 @@ Route::group([
     'prefix' => 'report'
 ], function ($router) {
     Route::post('/', [ReportProblemController::class, 'reportPost']);
+});
+
+// Report
+Route::group([
+    'prefix' => 'wallet'
+], function ($router) {
+    Route::get('/balance', [WalletController::class, 'wallet']);
+    Route::post('/update-wallet', [WalletController::class, 'updateWithdrawalBank']);
+    Route::post('/withdraw', [WalletController::class, 'withdraw']);
 });
