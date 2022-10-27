@@ -49,10 +49,10 @@ class BookedController extends Controller
             ));
             return response()->json(['message' => ' successfully Booked a user 👍', 'booked' => $data], 200);
         } catch (\Throwable $th) {
-            // throw $th;
-            return response()->json([
-                'message' => 'This error is from the backend, please contact the backend developer'
-            ], 500);
+            throw $th;
+            // return response()->json([
+            //     'message' => 'This error is from the backend, please contact the backend developer'
+            // ], 500);
         }
     }
     public function cancel($booked_id)
