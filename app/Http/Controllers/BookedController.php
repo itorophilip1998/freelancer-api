@@ -49,10 +49,10 @@ class BookedController extends Controller
             ));
             return response()->json(['message' => ' successfully Booked a user 👍', 'booked' => $data], 200);
         } catch (\Throwable $th) {
-            throw $th;
-            // return response()->json([
-            //     'message' => 'This error is from the backend, please contact the backend developer'
-            // ], 500);
+            // throw $th;
+            return response()->json([
+                'message' => 'This error is from the backend, please contact the backend developer'
+            ], 500);
         }
     }
     public function cancel($booked_id)
@@ -91,8 +91,7 @@ class BookedController extends Controller
             $isMe = Booked::where(["user_id" => auth()->user()->id])
                 ->where("booked_user_id", "!=", auth()->user()->id)
                 ->with("userbooked.profileImage", "userbooked.skills", "userbooked.ratings")
-                ->get()->map(function ($data) {
-
+                ->get()->map(function ($data) { 
                     $reviews = $data["userbooked"]["ratings"];
                     $isReviewed = null;
                     foreach ($reviews as $item) {
