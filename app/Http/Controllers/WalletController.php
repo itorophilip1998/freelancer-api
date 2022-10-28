@@ -48,20 +48,26 @@ class WalletController extends Controller
                 return response()->json(['message' => 'Unauthorized ⚠️'], 401);
             }
             $user = auth()->user();
-            $wallet_id = Wallet::find($user->id)->id;
+            $wallet_id = Wallet::find($user->id);
+            if ($wallet_id->balance > request()->amount) {
+                $wallet_id->update([
+                    "balance" => $wallet_id->balance - request()->amount
+                ]);
+            }
+
 
             $wallet = $user->withdrawal()->create([
                 "user_id"   => $user->id,
-                "wallet_id"   => $wallet_id,
+                "wallet_id"   => $wallet_id->id,
                 "amount" => request()->amount,
                 "status" => "not-paid",
             ]);
             return response()->json(['message' => 'User Wallet 👍', 'wallet' => $wallet], 200);
         } catch (\Throwable $th) {
-            // throw $th;
-            return response()->json([
-                'message' => 'This error is from the backend, please contact the backend developer'
-            ], 500);
+            throw $th;
+            // return response()->json([
+            //     'message' => 'This error is from the backend, please contact the backend developer'
+            // ], 500);
         }
     }
 
@@ -96,10 +102,10 @@ class WalletController extends Controller
             ]);
             return response()->json(['message' => ' successfully updated User Wallet 👍', 'wallet' => $wallet], 200);
         } catch (\Throwable $th) {
-            // throw $th;
-            return response()->json([
-                'message' => 'This error is from the backend, please contact the backend developer'
-            ], 500);
+            throw $th;
+            // return response()->json([
+            //     'message' => 'This error is from the backend, please contact the backend developer'
+            // ], 500);
         }
     }
 }
